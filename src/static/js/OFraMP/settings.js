@@ -15,9 +15,6 @@ var ATOM_STATUSES = {
   conflict: 16
 };
 
-var DEFAULT_SHELL = 1;
-var DEFAULT_REPO = "lipids";
-
 var PARTIALLY_SUPPORTED_BROWSERS = [{
   browser: "Chrome",
   minVersion: "0"
