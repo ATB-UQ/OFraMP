@@ -55,7 +55,7 @@
       window.onload = function() {
         var OAPoC_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/generate/";
         var OAPoC_LOAD_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/loadATB/";
-        var OMFraF_URL = "{{ base_server }}/{{ project_name_formatter('OMFraF') }}/load/";
+        var OMFraF_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
         var OMFraF_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
         var OMFraF_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
 
