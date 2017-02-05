@@ -748,6 +748,13 @@ OFraMP.prototype = {
     var repo = this.settings.omfraf.repository;
     data += (repo ? "&repo=" + repo : "");
     var shell = this.settings.omfraf.shellSize;
+    if (! shell) {
+        if (URLParams) {
+            if (URLParams.shell_size) {
+                shell = URLParams.shell_size;
+            }
+        }
+    }
     data += "&shell=" + (shell ? shell : this.settings.omfraf.default_shell_size);
 
     xhr.open("POST", this.settings.omfraf.generateUrl, true);
