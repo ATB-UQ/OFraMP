@@ -748,7 +748,7 @@ OFraMP.prototype = {
     var repo = this.settings.omfraf.repository;
     data += (repo ? "&repo=" + repo : "");
     var shell = this.settings.omfraf.shellSize;
-    data += (shell ? "&shell=" + shell : "");
+    data += "&shell=" + (shell ? shell : this.settings.omfraf.default_shell_size);
 
     xhr.open("POST", this.settings.omfraf.generateUrl, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

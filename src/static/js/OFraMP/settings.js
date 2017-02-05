@@ -69,7 +69,8 @@ var DEFAULT_SETTINGS = {
     url: "http://fragments.atb.uq.edu.au/omfraf/load/",
     repoUrl: "http://fragments.atb.uq.edu.au/omfraf/repos/",
     generateUrl: "http://fragments.atb.uq.edu.au/omfraf/generate/",
-    version: "1.0"
+    version: "1.0",
+    default_shell_size: "2",
   },
 
   zoom: {
