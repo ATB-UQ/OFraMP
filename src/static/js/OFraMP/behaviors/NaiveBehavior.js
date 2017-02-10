@@ -606,6 +606,13 @@ NaiveBehavior.prototype = {
         + "the top of the page.");
     content.appendChild(dp);
 
+	var dp2 = document.createElement('p');
+    $ext.dom.addText(dp2, "The charges you assigned were successfully transferred to the ATB. "
+    + "If you are done, you can close this window and refresh the ATB molecule's page. "
+    + "A new panel should be available to use the charges in a molecular topology of your choice."
+    );
+    content.appendChild(dp2);
+
     var cd = document.createElement('div');
     cd.className = "controls";
     content.appendChild(cd);
@@ -621,20 +628,6 @@ NaiveBehavior.prototype = {
         data: data,
         fname: fname
       }, "post", "_blank");
-    }, $ext.mouse.LEFT);
-    cd.appendChild(db);
-
-    var db = document.createElement('button');
-    $ext.dom.addText(db, "Send Charges to the ATB");
-    db.className = "border_box";
-    $ext.dom.onMouseClick(db, function() {
-      var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping);
-      var data = xhttp.responseText;
-      alert('Charges successfully sent to the ATB. You can now close this window and refresh the ATB molecule page.')
     }, $ext.mouse.LEFT);
     cd.appendChild(db);
 
@@ -656,6 +649,16 @@ NaiveBehavior.prototype = {
     cd.appendChild(cb);
 
     this.oframp.showPopup(title, content, true);
+
+    var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping);
+    var data = xhttp.responseText;
+    if (request.status !== 200) {
+      alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoir losing it, and retry in a while.')
+    }
   }
 };
 
