@@ -53,6 +53,10 @@ Molecule.prototype = {
     return this.atoms.getLGF() + this.bonds.getLGF();
   },
 
+  get_names_and_charges: function() {
+    return this.atoms.map((atom) => {return atom.get_name_and_charge()})
+  },
+
   /*
    * Get the width of this molecule.
    */

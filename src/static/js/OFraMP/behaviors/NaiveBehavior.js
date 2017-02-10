@@ -624,6 +624,20 @@ NaiveBehavior.prototype = {
     }, $ext.mouse.LEFT);
     cd.appendChild(db);
 
+    var db = document.createElement('button');
+    $ext.dom.addText(db, "Send Charges to the ATB");
+    db.className = "border_box";
+    $ext.dom.onMouseClick(db, function() {
+      var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping);
+      var data = xhttp.responseText;
+      alert('Charges successfully sent to the ATB. You can now close this window and refresh the ATB molecule page.')
+    }, $ext.mouse.LEFT);
+    cd.appendChild(db);
+
     var nb = document.createElement('button');
     $ext.dom.addText(nb, "Enter new molecule");
     nb.className = "border_box";

@@ -78,6 +78,10 @@ Atom.prototype = {
         + this.id + "\t" + "\n";
   },
 
+  get_name_and_charge: function() {
+    return [this.elementID, this.charge];
+  },
+
   /*
    * Get the base of a hydrogen atom.
    * 
