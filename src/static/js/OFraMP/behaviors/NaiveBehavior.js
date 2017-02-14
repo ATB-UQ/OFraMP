@@ -606,12 +606,14 @@ NaiveBehavior.prototype = {
         + "the top of the page.");
     content.appendChild(dp);
 
-	var dp2 = document.createElement('p');
-    $ext.dom.addText(dp2, "The charges you assigned were successfully transferred to the ATB. "
-    + "If you are done, you can close this window and refresh the ATB molecule's page. "
-    + "A new panel should be available to use the charges in a molecular topology of your choice."
-    );
-    content.appendChild(dp2);
+    if (URLParams.user_token) {
+      var dp2 = document.createElement('p');
+      $ext.dom.addText(dp2, "The charges you assigned were successfully transferred to the ATB. "
+      + "If you are done, you can close this window and refresh the ATB molecule's page. "
+      + "A new panel should be available to use the charges in a molecular topology of your choice."
+      );
+      content.appendChild(dp2);
+    }
 
     var cd = document.createElement('div');
     cd.className = "controls";
@@ -650,14 +652,16 @@ NaiveBehavior.prototype = {
 
     this.oframp.showPopup(title, content, true);
 
-    var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping);
-    var data = xhttp.responseText;
-    if (request.status !== 200) {
-      alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoir losing it, and retry in a while.')
+    if (URLParams.user_token) {
+      var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping + '&user_token=' + URLParams.user_token);
+      var data = xhttp.responseText;
+      if (xhttp.status !== 200) {
+        alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoir losing it, and retry in a while.')
+      }
     }
   }
 };
