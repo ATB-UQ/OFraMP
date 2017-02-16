@@ -329,6 +329,16 @@
           } else if(URLParams.oss) {
             oframp.loadOSS(URLParams.oss);
           }
+
+          if (URLParams.user_token) {
+          }
+          else {
+            alert(
+              "No ATB user_token was found in the HTTP request. This means that OFraMP will work, but the charges generated will not be saved in the ATB and won't be available to populate topology templates.\n\nTo get an ATB user token, go to the ATB (https://atb.uq.edu.au), log in to your ATB account and go to the ATB page of the molecule of interest. " +
+              "Then, click the 'Fragment-Based Parametrisation with OFraMP' button at the top of the page (requires Partner account on the ATB)." +
+              "\n\nIf you don't have a Partner account, please request one by emailing any of the ATB admins."
+            );
+          }
         }
       };
     </script>
