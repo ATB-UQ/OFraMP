@@ -58,6 +58,7 @@
         var OMFraF_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
         var OMFraF_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
         var OMFraF_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
+        var ATB_API_URL = "{{ atb_api_url }}/";
 
         $ext.dom.remove(document.getElementById("loader"));
 
@@ -70,6 +71,9 @@
             url: OMFraF_URL,
             repoUrl: OMFraF_REPO_URL,
             generateUrl: OMFraF_GENERATE_URL
+          },
+          atb: {
+            api_url: ATB_API_URL,
           }
         });
 

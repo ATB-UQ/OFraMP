@@ -655,12 +655,12 @@ NaiveBehavior.prototype = {
     if (URLParams.user_token) {
       var json_mapping = JSON.stringify(_this.oframp.mv.molecule.get_names_and_charges());
       var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "http://atb.uq.edu.au/api/current/molecules/oframp_charges.py", false);
+      xhttp.open("POST", _this.oframp.settings.atb.api_url + "api/current/molecules/oframp_charges.py", false);
       xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       xhttp.send("molid=" + _this.oframp.mv.molecule.molid + "&json_mapping=" + json_mapping + '&user_token=' + URLParams.user_token);
       var data = xhttp.responseText;
       if (xhttp.status !== 200) {
-        alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoir losing it, and retry in a while.')
+        alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send to ATB" button.')
       }
     }
   }
