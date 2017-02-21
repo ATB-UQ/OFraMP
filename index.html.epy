@@ -350,6 +350,7 @@
               "Then, click the 'Fragment-Based Parametrisation with OFraMP' button at the top of the page (requires Partner account on the ATB)." +
               "\n\nIf you don't have a Partner account, please request one by emailing any of the ATB admins."
             );
+            atb_button.disabled = true;
           }
         }
       };
