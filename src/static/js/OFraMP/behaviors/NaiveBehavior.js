@@ -581,11 +581,12 @@ NaiveBehavior.prototype = {
       var title = "No more options available";
       var message = "The molecule has been parameterised up to the point "
           + "where there are no more available fragments for the "
-          + "unparameterised atoms. You can manually add charges for these "
+          + "unparameterised atoms. You will have to manually add charges for these "
           + "atoms by selecting them and using the charge edit buttons in "
-          + "the selection details window. Charges for other atoms can be"
+          + "the selection details window. Charges for other atoms can be "
           + "edited here as well.";
-    } else {
+    }
+    else {
       var title = "Fully parameterised";
       var message = "All atoms in the molecule have been parameterised. If "
           + "you feel some charges need to be adjusted, this can be done by "
@@ -600,10 +601,17 @@ NaiveBehavior.prototype = {
     content.appendChild(mp);
 
     var dp2 = document.createElement('p');
-    $ext.dom.addText(dp2, "Click the 'Send to ATB' button above to send your charge assignment to the ATB.",
-    + "If you are done, you can close this window and refresh the ATB molecule's page. "
-    + "A new panel should be available to use the charges in a molecular topology file of your choice."
-    );
+    if (incomplete === true) {
+      $ext.dom.addText(dp2, "Once finished, click the 'Send to ATB' button above to send the charges to the ATB"
+      + "to make them available for Force Field parametrisation."
+      );
+    }
+    else {
+      $ext.dom.addText(dp2, "Click the 'Send to ATB' button above to send your charge assignment to the ATB.",
+      + "If you are done, you can close this window and refresh the ATB molecule's page. "
+      + "A new panel should be available to use the charges in a molecular topology file of your choice."
+      );
+    }
     content.appendChild(dp2);
 
     var cd = document.createElement('div');
@@ -643,7 +651,9 @@ NaiveBehavior.prototype = {
 
     this.oframp.showPopup(title, content, true);
 
-    _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
+    if (incomplete === false) {
+      _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
+    }
   }
 };
 
