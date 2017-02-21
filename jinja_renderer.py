@@ -4,7 +4,7 @@ from jinja2 import Template
 BASE_SERVER = 'http://fragments.atb.uq.edu.au'
 GOOGLE_ANALYTICS_ID = 'UA-59222530-5'
 
-ATB_API_URL = 'http://scmb-atb.biosci.uq.edu.au/atb-uqbcaron'
+ATB_API_URL = 'https://atb.uq.edu.au'
 
 PROJECT_NAME_FORMATTER = lambda project_name: project_name.lower()
 
