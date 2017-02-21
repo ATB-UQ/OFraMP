@@ -515,7 +515,10 @@ Molecule.prototype = {
            alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send to ATB" button.')
         }
         else {
-          alert("Charge assignment successfully sent to the ATB.\nYou can close this window and refresh the ATB molecule's page.\nA new panel should be available to use the charges in a molecular topology file of your choice.");
+          var should_redirect = confirm("Charge assignment successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
+          if (should_redirect == true) {
+            window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
+          }
         }
       }
     }

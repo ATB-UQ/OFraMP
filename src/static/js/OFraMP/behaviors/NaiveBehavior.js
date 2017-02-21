@@ -577,6 +577,10 @@ NaiveBehavior.prototype = {
     }
     var _this = this;
 
+    if (incomplete === undefined) {
+      incomplete = false;
+    }
+
     if(incomplete === true) {
       var title = "No more options available";
       var message = "The molecule has been parameterised up to the point "
