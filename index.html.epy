@@ -166,6 +166,7 @@
           }, "post", "_blank");
         }
 
+        /*
         var sv = document.getElementById("save");
         $ext.dom.onMouseClick(sv, downloadLGF, $ext.mouse.LEFT);
         function downloadLGF() {
@@ -176,6 +177,13 @@
             data: data,
             fname: fname
           }, "post", "_blank");
+        }
+        */
+
+        var atb_button = document.getElementById("atb");
+        $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
+        function transfer_charges() {
+          oframp.mv.molecule.transfer_charges(oframp.settings.atb.api_url);
         }
 
         var ub = document.getElementById("undo");
@@ -377,8 +385,8 @@
           <button id="snap" class="border_box" title="Save the current state (Alt+S)">
             Checkpoint
           </button>
-          <button id="save" class="border_box" title="Download the current strcuture as an LGF file (Alt+L)">
-            Download
+          <button id="atb" class="border_box" title="Transfer charges to the ATB">
+            Send to ATB
           </button>
         </div>
 

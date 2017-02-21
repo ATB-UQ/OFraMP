@@ -486,5 +486,22 @@ Molecule.prototype = {
   draw: function() {
     this.atoms.draw();
     this.bonds.draw();
+  },
+
+  transfer_charges: function(api_url) {
+    if (URLParams.user_token) {
+      var json_mapping = JSON.stringify(this.get_names_and_charges());
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", api_url + "api/current/molecules/oframp_charges.py", false);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send("molid=" + this.molid + "&json_mapping=" + json_mapping + "&user_token=" + URLParams.user_token);
+      var data = xhttp.responseText;
+      if (xhttp.status !== 200) {
+         alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send to ATB" button.')
+      }
+      else {
+        alert("Charge assignment successfully sent to the ATB.\nYou can close this window and refresh the ATB molecule's page.\nA new panel should be available to use the charges in a molecular topology file of your choice.");
+      }
+    }
   }
 };
