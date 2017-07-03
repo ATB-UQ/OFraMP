@@ -1,9 +1,9 @@
 /**
  * Data structure for an atom
  */
-function Atom(list, id, element, elementID, iacm, x, y, charge, previewCharge,
+function Atom(list, id, element, elementID, iacm, x, y, z, charge, previewCharge,
     usedFragments, status) {
-  this.__init(list, id, element, elementID, iacm, x, y, charge, previewCharge,
+  this.__init(list, id, element, elementID, iacm, x, y, z, charge, previewCharge,
       usedFragments, status);
 }
 
@@ -23,7 +23,7 @@ Atom.prototype = {
   usedFragments: undefined,
   status: undefined,
 
-  __init: function(list, id, element, elementID, iacm, x, y, charge,
+  __init: function(list, id, element, elementID, iacm, x, y, z, charge,
       previewCharge, usedFragments, status) {
     this.list = list;
     this.settings = list.settings;
@@ -35,6 +35,7 @@ Atom.prototype = {
     this.iacm = iacm;
     this.x = x;
     this.y = y;
+    this.z = z;
     this.charge = charge;
     this.previewCharge = previewCharge;
     this.usedFragments = usedFragments || new Array();
@@ -47,7 +48,10 @@ Atom.prototype = {
   getSimpleJSON: function() {
     return {
       id: this.id,
-      type: this.iacm
+      type: this.iacm,
+      x: this.x,
+      y: this.y,
+      z: this.z,
     };
   },
 
@@ -62,6 +66,7 @@ Atom.prototype = {
       iacm: this.iacm,
       x: this.x,
       y: this.y,
+      z: this.z,
       charge: this.charge,
       previewCharge: this.previewCharge,
       usedFragments: this.usedFragments,

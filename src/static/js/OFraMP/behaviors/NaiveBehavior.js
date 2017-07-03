@@ -585,7 +585,7 @@ NaiveBehavior.prototype = {
       var title = "No more options available";
       var message = "The molecule has been parameterised up to the point "
           + "where there are no more available fragments for the "
-          + "unparameterised atoms. You will have to manually add charges for these "
+          + "unparameterised atoms. You may manually add charges for these "
           + "atoms by selecting them and using the charge edit buttons in "
           + "the selection details window. Charges for other atoms can be "
           + "edited here as well.";
@@ -604,36 +604,73 @@ NaiveBehavior.prototype = {
     $ext.dom.addText(mp, message);
     content.appendChild(mp);
 
-    var dp2 = document.createElement('p');
-    if (incomplete === true) {
-      $ext.dom.addText(dp2, "Once finished, click the 'Send to ATB' button above to send the charges to the ATB"
-      + "to make them available for Force Field parametrisation."
-      );
+    if(URLParams) {
+      if (URLParams.user_token) {
+
+        var dp2 = document.createElement('p');
+        if (incomplete === true) {
+          var dp3 = document.createElement('p');
+          $ext.dom.addText(dp3, "Or you may click the 'Send missing to ATB' button to compute the charges of the missing"
+            + "(unparameterized) parts of the molecule with the ATB."
+          );
+          content.appendChild(dp3);
+
+          $ext.dom.addText(dp2, "Once finished, click the 'Send charges to ATB' button above to send the charges to the ATB "
+            + "to make them available for Force Field parametrisation."
+          );
+        } else {
+          $ext.dom.addText(dp2, "Click the 'Send charges to ATB' button to send your charge assignment to the ATB. "
+            + "If you are done, you can close this window and refresh the ATB molecule's page. "
+            + "A new panel should be available to use the charges in a molecular topology file of your choice."
+          );
+        }
+        content.appendChild(dp2);
+
+      }
     }
-    else {
-      $ext.dom.addText(dp2, "Click the 'Send to ATB' button above to send your charge assignment to the ATB.",
-      + "If you are done, you can close this window and refresh the ATB molecule's page. "
-      + "A new panel should be available to use the charges in a molecular topology file of your choice."
-      );
-    }
-    content.appendChild(dp2);
+
 
     var cd = document.createElement('div');
     cd.className = "controls";
     content.appendChild(cd);
 
     var db = document.createElement('button');
-    $ext.dom.addText(db, "Download LGF");
     db.className = "border_box";
-    $ext.dom.onMouseClick(db, function() {
-      var data = _this.oframp.mv.molecule.getLGF();
-      var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
-      var fname = "OFraMP-" + date + ".lgf";
-      $ext.sendDataForm("save.php", {
-        data: data,
-        fname: fname
-      }, "post", "_blank");
-    }, $ext.mouse.LEFT);
+    if(URLParams) {
+      if (URLParams.user_token) {
+
+        if (incomplete === true) {
+          $ext.dom.addText(db, "Send missing to ATB");
+          $ext.dom.onMouseClick(db, transfer_missing, $ext.mouse.LEFT);
+          function transfer_missing() {
+            _this.oframp.mv.molecule.transfer_missing(
+              _this.oframp.settings.atb.api_url,
+              _this.oframp.off,
+              _this.oframp.settings.omfraf.version);
+          }
+        } else {
+          $ext.dom.addText(db, "Send charges to ATB");
+          $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
+          function transfer_charges() {
+            _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
+          }
+        }
+
+      } else {
+
+        $ext.dom.addText(db, "Download LGF");
+        $ext.dom.onMouseClick(db, function() {
+          var data = _this.oframp.mv.molecule.getLGF();
+          var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
+          var fname = "OFraMP-" + date + ".lgf";
+          $ext.sendDataForm("save.php", {
+            data: data,
+            fname: fname
+          }, "post", "_blank");
+        }, $ext.mouse.LEFT);
+
+      }
+    }
     cd.appendChild(db);
 
     var nb = document.createElement('button');

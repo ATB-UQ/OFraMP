@@ -68,7 +68,7 @@ OFraMP.prototype = {
         sb.title = "";
       }
     }, function(msg) {
-      alert("Could not connect to OMFraF, fragment finding is not possible:\n"
+      alert("Could not connect to FDB, fragment finding is not possible:\n"
           + msg);
       this.repos = [];
       var sb = document.getElementById("mds_submit");
@@ -432,9 +432,12 @@ OFraMP.prototype = {
     var ss = document.createElement('select');
     ss.id = "shell_size";
     ss.className = "border_box";
-    for( var i = 1; i <= 5; i++) {
+    $ext.dom.addSelectOption(ss, 1, 1, false);
+    $ext.dom.addSelectOption(ss, 2, 2, true);
+    for( var i = 3; i <= 5; i++) {
       $ext.dom.addSelectOption(ss, i);
     }
+
     sd.appendChild(ss);
 
     var hr = document.createElement('hr');
@@ -678,7 +681,7 @@ OFraMP.prototype = {
   },
 
   /*
-   * Instruct OMFraF to generate the molecule fragments.
+   * Instruct FDB to generate the molecule fragments.
    */
   generateMoleculeFragments: function(queryJSON) {
     var _this = this;
@@ -712,12 +715,12 @@ OFraMP.prototype = {
           var vc = $ext.string.versionCompare(_this.settings.omfraf.version,
               fd.version);
           if(vc == 1) {
-            var msg = "OMFraF version too old." + "\n\nRequired version: "
+            var msg = "FDB version too old." + "\n\nRequired version: "
                 + _this.settings.omfraf.version + "\nCurrent version: "
                 + fd.version;
             showError(msg);
           } else if(vc == -1) {
-            var msg = "OMFraF version too new." + "\n\nRequired version: "
+            var msg = "FDB version too new." + "\n\nRequired version: "
                 + _this.settings.omfraf.version + "\nCurrent version: "
                 + fd.version;
             showError(msg);
@@ -738,7 +741,7 @@ OFraMP.prototype = {
                 _this.fragmentsGeneratedEvent);
           }
         } else {
-          var msg = "Could not connect to the OMFraF server.";
+          var msg = "Could not connect to the FDB server.";
           showError(msg);
         }
       }
@@ -833,12 +836,12 @@ OFraMP.prototype = {
           var vc = $ext.string.versionCompare(_this.settings.omfraf.version,
               fd.version);
           if(vc == 1) {
-            var msg = "OMFraF version too old." + "\n\nRequired version: "
+            var msg = "FDB version too old." + "\n\nRequired version: "
                 + _this.settings.omfraf.version + "\nCurrent version: "
                 + fd.version;
             showError(msg);
           } else if(vc == -1) {
-            var msg = "OMFraF version too new." + "\n\nRequired version: "
+            var msg = "FDB version too new." + "\n\nRequired version: "
                 + _this.settings.omfraf.version + "\nCurrent version: "
                 + fd.version;
             showError(msg);
@@ -868,7 +871,7 @@ OFraMP.prototype = {
             $ext.dom.dispatchEvent(_this.container, _this.fragmentsFoundEvent);
           }
         } else {
-          var msg = "Could not connect to the OMFraF server.";
+          var msg = "Could not connect to the FDB server.";
           showError(msg);
         }
       }

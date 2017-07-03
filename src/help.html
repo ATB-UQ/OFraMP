@@ -153,7 +153,7 @@
           <a href="#errors">Solving problems</a>
           <ol>
             <li><a href="#oapocerror">OAPoC errors</a></li>
-            <li><a href="#omfraferror">OMFraF errors</a></li>
+            <li><a href="#omfraferror">FDB errors</a></li>
             <li><a href="#miscerror">Miscellaneous errors</a></li>
           </ol>
         </li>
@@ -189,9 +189,9 @@
         for a new way of parameterising a molecule: based on fragments.
       </p>
       <p>
-        OFraMP is the first tool to implement this concept. Combined with its
+        Combined with its
         supporting systems OAPoC (Online tool for Atom Position Calculation) and
-        OMFraF (Online tool for Molecule Fragment Finding), OFraMP allows the user
+        FDB (Fragment Database), OFraMP allows the user
         to insert a molecule and then present him with matching fragments of similar
         molecules, such that he can select the best matches and completely
         parameterise the molecule he inserted.
@@ -618,26 +618,26 @@
         data into the system. Please make sure the data is either in PDB, SMILES
         or InChI format, or is an ATB Molecule ID, and then try again.
       </p>
-      <h3 id="omfraferror">Online Molecule Fragment Finder (OMFraF) errors</h3>
+      <h3 id="omfraferror">Fragment Database (FDB) errors</h3>
       <hr />
       <p>
-        OMFraF is the system responsible for generating and finding fragments
+        FDB is the system responsible for generating and finding fragments
         that resemble the molecule you enter. Without it, OFraMP can still be
         used to display a molecule, but fragment finding will not be possible.
       </p>
       <p>
-        When OMFraF cannot be reached upon loading OFraMP, the following error
+        When FDB cannot be reached upon loading OFraMP, the following error
         message will be shown:<br />
         <img class="thumb" src="static/img/help/om_1.png" alt="" />
       </p>
       <p>
         You can ignore this, and still enter a molecule into the system, but,
         as mentioned before, fragment finding will not be possible. The best way
-        to resolve this is to just wait until OMFraF comes back up again, which
+        to resolve this is to just wait until FDB comes back up again, which
         it should do shortly.
       </p>
       <p>
-        OMFraF can also produce errors upon generating fragments (left image)
+        FDB can also produce errors upon generating fragments (left image)
         or finding fragments that match the selection (right image):<br />
         <img class="thumb" src="static/img/help/om_2.png" alt="" />
         <img class="thumb" src="static/img/help/om_3.png" alt="" />

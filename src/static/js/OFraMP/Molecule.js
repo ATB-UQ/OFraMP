@@ -488,6 +488,69 @@ Molecule.prototype = {
     this.bonds.draw();
   },
 
+  transfer_missing: function(api_url, off, version) {
+    if (URLParams.user_token) {
+      var states = this.atoms.map((atom) => {return atom.getStatus()})
+      var no_missing = true;
+      for (var status of states) {
+        if (status === ATOM_STATUSES.unparameterizable) {
+          no_missing = false;
+          break;
+        }
+      }
+
+      if (no_missing) {
+        alert('There are no unparameterizable atoms.');
+      } else {
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if(xhr.readyState == 4) {
+            if(xhr.status == 200) {
+              var fd = JSON.parse(xhr.responseText);
+              var vc = $ext.string.versionCompare(version, fd.version);
+              if(vc == 1) {
+                alert("FDB version too old." + "\n\nRequired version: "
+                    + _this.settings.omfraf.version + "\nCurrent version: "
+                    + fd.version);
+              } else if(vc == -1) {
+                alert("FDB version too new." + "\n\nRequired version: "
+                    + _this.settings.omfraf.version + "\nCurrent version: "
+                    + fd.version);
+              } else if(fd.error) {
+                alert(fd.error);
+              } else if(fd.missing_fragments) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", api_url + "api/current/fragments/submit_new.fragments.py", false);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("missing_fragments=" + fd.missing_fragments + "&atb_token=" + 'None'); //URLParams.user_token);
+                var data = xhttp.responseText;
+                if (xhttp.status !== 200) {
+                  alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
+                } else {
+                  // TODO Should we redirect the user (and if so, to which page)?
+                  var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
+                  if (should_redirect == true) {
+                    window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
+                  }
+                }
+              }
+            } else {
+              alert("Could not connect to the FDB server.");
+            }
+          }
+        };
+
+        var query = JSON.stringify({off: off});
+        var data = "data=" + encodeURIComponent(query);
+
+        xhr.open("POST", this.settings.omfraf.missingUrl, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(data);
+      }
+    }
+  },
+
   transfer_charges: function(api_url) {
     if (URLParams.user_token) {
       var charge_mapping = this.get_names_and_charges();

@@ -58,6 +58,7 @@
         var OMFraF_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
         var OMFraF_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
         var OMFraF_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
+        var OMFraF_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
         var ATB_API_URL = "{{ atb_api_url }}/";
 
         $ext.dom.remove(document.getElementById("loader"));
@@ -70,7 +71,8 @@
           omfraf: {
             url: OMFraF_URL,
             repoUrl: OMFraF_REPO_URL,
-            generateUrl: OMFraF_GENERATE_URL
+            generateUrl: OMFraF_GENERATE_URL,
+            missingUrl: OMFraF_MISSING_URL
           },
           atb: {
             api_url: ATB_API_URL,
@@ -145,7 +147,6 @@
         }
 
         var of = document.getElementById("open");
-        of.style.display = "none";
         $ext.dom.onMouseClick(of, openFile, $ext.mouse.LEFT);
         function openFile() {
           oframp.showInsertMoleculePopup();
@@ -179,6 +180,12 @@
           }, "post", "_blank");
         }
         */
+
+        var atb_missing_button = document.getElementById("atb_missing");
+        $ext.dom.onMouseClick(atb_missing_button, transfer_missing, $ext.mouse.LEFT);
+        function transfer_missing() {
+          oframp.mv.molecule.transfer_missing(oframp.settings.atb.api_url, oframp.off, oframp.settings.omfraf.version);
+        }
 
         var atb_button = document.getElementById("atb");
         $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
@@ -351,6 +358,7 @@
               "\n\nIf you don't have a Partner account, please request one by emailing any of the ATB admins."
             );
             atb_button.disabled = true;
+            atb_missing_button.disabled = true;
           }
         }
       };
@@ -384,10 +392,13 @@
             Open
           </button>
           <button id="snap" class="border_box" title="Save the current state (Alt+S)">
-            Checkpoint
+            Save
+          </button>
+          <button id="atb_missing" class="border_box" title="Transfer missing fragments to the ATB">
+            Send missing to ATB
           </button>
           <button id="atb" class="border_box" title="Transfer charges to the ATB">
-            Send to ATB
+            Send charges to ATB
           </button>
         </div>
 

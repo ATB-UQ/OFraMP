@@ -16,9 +16,9 @@ html, body {
     position: absolute;
     top: 10px;
     left: 50%;
-    width: 600px;
+    width: 800px;
     height: 30px;
-    margin-left: -280px;
+    margin-left: -420px;
     z-index: 2;
     overflow: hidden;
     text-align: center;
