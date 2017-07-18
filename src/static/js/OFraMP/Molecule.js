@@ -521,7 +521,7 @@ Molecule.prototype = {
                 alert(fd.error);
               } else if(fd.missing_fragments) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", api_url + "api/current/fragments/submit_new.fragments.py", false);
+                xhttp.open("POST", api_url + "api/current/fragments/submit_missing_fragments.py", false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send("missing_fragments=" + fd.missing_fragments + "&atb_token=" + 'None'); //URLParams.user_token);
                 var data = xhttp.responseText;
