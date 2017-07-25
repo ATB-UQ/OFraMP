@@ -523,7 +523,7 @@ Molecule.prototype = {
                 var xhttp = new XMLHttpRequest();
                 xhttp.open("POST", api_url + "api/current/fragments/submit_missing_fragments.py", false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("missing_fragments=" + fd.missing_fragments + "&atb_token=" + 'None'); //URLParams.user_token);
+                xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments) + "&atb_token=" + URLParams.user_token);
                 var data = xhttp.responseText;
                 if (xhttp.status !== 200) {
                   alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
