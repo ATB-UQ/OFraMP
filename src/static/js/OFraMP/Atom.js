@@ -1,9 +1,9 @@
 /**
  * Data structure for an atom
  */
-function Atom(list, id, element, elementID, iacm, x, y, z, charge, previewCharge,
+function Atom(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge, previewCharge,
     usedFragments, status) {
-  this.__init(list, id, element, elementID, iacm, x, y, z, charge, previewCharge,
+  this.__init(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge, previewCharge,
       usedFragments, status);
 }
 
@@ -23,7 +23,7 @@ Atom.prototype = {
   usedFragments: undefined,
   status: undefined,
 
-  __init: function(list, id, element, elementID, iacm, x, y, z, charge,
+  __init: function(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge,
       previewCharge, usedFragments, status) {
     this.list = list;
     this.settings = list.settings;
@@ -35,7 +35,9 @@ Atom.prototype = {
     this.iacm = iacm;
     this.x = x;
     this.y = y;
-    this.z = z;
+    this.x3d = x3d;
+    this.y3d = y3d;
+    this.z3d = z3d;
     this.charge = charge;
     this.previewCharge = previewCharge;
     this.usedFragments = usedFragments || new Array();
@@ -51,7 +53,9 @@ Atom.prototype = {
       type: this.iacm,
       x: this.x,
       y: this.y,
-      z: this.z,
+      x3d: this.x3d,
+      y3d: this.y3d,
+      z3d: this.z3d
     };
   },
 
@@ -66,7 +70,9 @@ Atom.prototype = {
       iacm: this.iacm,
       x: this.x,
       y: this.y,
-      z: this.z,
+      x3d: this.x3d,
+      y3d: this.y3d,
+      z3d: this.z3d,
       charge: this.charge,
       previewCharge: this.previewCharge,
       usedFragments: this.usedFragments,
@@ -122,7 +128,7 @@ Atom.prototype = {
    * Get this atom's label.
    */
   getLabel: function(withHs) {
-    var label = this.element;
+    var label = this.iacm;
     if(withHs
         || (this.settings.atom.combineHLabels === true && this.settings.atom.showHAtoms !== true)) {
       var hs = $ext.array.filter(this.getBondedAtoms(), function(atom) {
