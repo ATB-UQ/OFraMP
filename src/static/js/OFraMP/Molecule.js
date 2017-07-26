@@ -489,7 +489,7 @@ Molecule.prototype = {
   },
 
   transfer_missing: function(api_url, off, version) {
-    if (URLParams.user_token) {
+    if (URLParams.user_token && URLParams.atb_id) {
       var states = this.atoms.map((atom) => {return atom.getStatus()})
       var no_missing = true;
       for (var status of states) {
@@ -523,7 +523,9 @@ Molecule.prototype = {
                 var xhttp = new XMLHttpRequest();
                 xhttp.open("POST", api_url + "api/current/fragments/submit_missing_fragments.py", false);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments) + "&atb_token=" + URLParams.user_token);
+                xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments)
+                  + "&atb_token=" + URLParams.user_token
+                  + "&molid=" + URLParams.atb_id);
                 var data = xhttp.responseText;
                 if (xhttp.status !== 200) {
                   alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
