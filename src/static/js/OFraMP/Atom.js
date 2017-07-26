@@ -128,7 +128,7 @@ Atom.prototype = {
    * Get this atom's label.
    */
   getLabel: function(withHs) {
-    var label = this.iacm;
+    var label = this.element;
     if(withHs
         || (this.settings.atom.combineHLabels === true && this.settings.atom.showHAtoms !== true)) {
       var hs = $ext.array.filter(this.getBondedAtoms(), function(atom) {
