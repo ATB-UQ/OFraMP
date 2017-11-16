@@ -255,9 +255,9 @@ MoleculeViewer.prototype = {
   /*
    * Get the molecule data from OAPoC and run the success function on success.
    * 
-   * If fromATB is true, the molecule will be retrieved from ATB.
+   * If fromFDB is true, the molecule will be retrieved from FDB.
    */
-  getMoleculeData: function(dataStr, success, failure, fromATB) {
+  getMoleculeData: function(dataStr, success, failure, fromFDB) {
     var _this = this;
     success = success || function() {};
     failure = failure || function() {};
@@ -305,7 +305,7 @@ MoleculeViewer.prototype = {
       }
     };
 
-    if(fromATB) {
+    if(fromFDB) {
       var url = this.settings.oapoc.loadUrl;
       var data = "molid=" + encodeURIComponent(dataStr);
     } else {
@@ -322,13 +322,13 @@ MoleculeViewer.prototype = {
    * 
    * Once the molecule has been loaded execute the optional success function;
    */
-  showMolecule: function(dataStr, success, failure, fromATB) {
+  showMolecule: function(dataStr, success, failure, fromFDB) {
     this.getMoleculeData(dataStr, function(md) {
       this.showOverlay("Initializing molecule...");
       this.molecule = new Molecule(this, md.atoms, md.bonds, md.dataStr,
           md.molid);
 
-      if(!fromATB) {
+      if(!fromFDB) {
         var mj = JSON.stringify({
           molecule: this.molecule.getSimpleJSON()
         });
@@ -344,7 +344,7 @@ MoleculeViewer.prototype = {
       if(failure) {
         failure.call(this, msg);
       }
-    }, fromATB);
+    }, fromFDB);
   },
 
   loadMolecule: function(data) {

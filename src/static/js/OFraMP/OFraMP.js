@@ -416,7 +416,11 @@ OFraMP.prototype = {
     rs.className = "border_box";
     if(this.repos) {
       $ext.each(this.repos, function(repo) {
-        $ext.dom.addSelectOption(rs, repo);
+        if (repo != _this.settings.defaults.repo) {
+          $ext.dom.addSelectOption(rs, repo);
+        } else {
+          $ext.dom.addSelectOption(rs, repo, null, true);
+        }
       });
     } else {
       $ext.dom.addSelectOption(rs, "Loading...");
@@ -434,8 +438,12 @@ OFraMP.prototype = {
     ss.className = "border_box";
     $ext.dom.addSelectOption(ss, 1, 1, false);
     $ext.dom.addSelectOption(ss, 2, 2, true);
-    for( var i = 3; i <= 5; i++) {
-      $ext.dom.addSelectOption(ss, i);
+    for( var i = 1; i <= this.settings.defaults.maxShell; i++) {
+      if (i != _this.settings.defaults.defaultShell) {
+        $ext.dom.addSelectOption(ss, i);
+      } else {
+        $ext.dom.addSelectOption(ss, i, null, true);
+      }
     }
 
     sd.appendChild(ss);

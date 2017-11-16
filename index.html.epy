@@ -55,11 +55,14 @@
       window.onload = function() {
         var OAPoC_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/generate/";
         var OAPoC_LOAD_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/loadATB/";
-        var OMFraF_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
-        var OMFraF_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
-        var OMFraF_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
-        var OMFraF_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
+        var FDB_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
+        var FDB_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
+        var FDB_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
+        var FDB_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
         var ATB_API_URL = "{{ atb_api_url }}/";
+        var DEFAULT_REPO = "qm_1_and_2";
+        var DEFAULT_SHELL = 2;
+        var MAX_SHELL = 5;
 
         $ext.dom.remove(document.getElementById("loader"));
 
@@ -69,22 +72,24 @@
             loadUrl : OAPoC_LOAD_URL
           },
           omfraf: {
-            url: OMFraF_URL,
-            repoUrl: OMFraF_REPO_URL,
-            generateUrl: OMFraF_GENERATE_URL,
-            missingUrl: OMFraF_MISSING_URL
+            url: FDB_URL,
+            repoUrl: FDB_REPO_URL,
+            generateUrl: FDB_GENERATE_URL,
+            missingUrl: FDB_MISSING_URL
           },
           atb: {
             api_url: ATB_API_URL,
+          },
+          defaults: {
+            repo: DEFAULT_REPO,
+            defaultShell: DEFAULT_SHELL,
+            maxShell: MAX_SHELL
           }
         });
 
         window.onresize = function() {
           oframp.setMVSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
         };
-
-        // ONLY for debug purposes, TODO : remove
-        doframp = oframp;
 
         var zi = document.getElementById("zoomin");
         zi.onclick = function() {
@@ -392,7 +397,7 @@
             Open
           </button>
           <button id="snap" class="border_box" title="Save the current state (Alt+S)">
-            Save
+            Checkpoint
           </button>
           <button id="atb_missing" class="border_box" title="Transfer missing fragments to the ATB">
             Send missing to ATB
