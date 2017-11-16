@@ -525,6 +525,7 @@ Molecule.prototype = {
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments)
                   + "&atb_token=" + URLParams.user_token
+                  + "&timeout=500"
                   + "&molid=" + URLParams.atb_id);
                 var data = xhttp.responseText;
                 if (xhttp.status !== 200) {
