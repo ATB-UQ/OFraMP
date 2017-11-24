@@ -436,8 +436,6 @@ OFraMP.prototype = {
     var ss = document.createElement('select');
     ss.id = "shell_size";
     ss.className = "border_box";
-    $ext.dom.addSelectOption(ss, 1, 1, false);
-    $ext.dom.addSelectOption(ss, 2, 2, true);
     for( var i = 1; i <= this.settings.defaults.maxShell; i++) {
       if (i != _this.settings.defaults.defaultShell) {
         $ext.dom.addSelectOption(ss, i);
