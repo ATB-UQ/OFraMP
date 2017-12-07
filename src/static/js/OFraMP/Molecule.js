@@ -44,9 +44,19 @@ Molecule.prototype = {
   getJSON: function() {
     return {
       dataStr: this.dataStr,
+      molid: this.molid,
       atoms: this.atoms.getJSON(),
       bonds: this.bonds.getJSON()
     };
+  },
+
+  downloadLGF: function() {
+    var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
+    var fname = "OFraMP-" + date + ".lgf";
+    $ext.sendDataForm("save.php", {
+      data: this.getLGF(),
+      fname: fname
+    }, "post", "_blank");
   },
 
   getLGF: function() {
@@ -489,7 +499,7 @@ Molecule.prototype = {
   },
 
   transfer_missing: function(api_url, off, version) {
-    if (URLParams.user_token && URLParams.atb_id) {
+    if (URLParams && URLParams.user_token && this.molid) {
       var states = this.atoms.map((atom) => {return atom.getStatus()})
       var no_missing = true;
       for (var status of states) {
@@ -526,12 +536,11 @@ Molecule.prototype = {
                 xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments)
                   + "&atb_token=" + URLParams.user_token
                   + "&timeout=500"
-                  + "&molid=" + URLParams.atb_id);
+                  + "&molid=" + this.molid);
                 var data = xhttp.responseText;
                 if (xhttp.status !== 200) {
                   alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
                 } else {
-                  // TODO Should we redirect the user (and if so, to which page)?
                   var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
                   if (should_redirect == true) {
                     window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
@@ -555,7 +564,7 @@ Molecule.prototype = {
   },
 
   transfer_charges: function(api_url) {
-    if (URLParams.user_token) {
+    if (URLParams && URLParams.user_token && this.molid) {
       var charge_mapping = this.get_names_and_charges();
 
       var has_undefined_charges = false;

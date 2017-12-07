@@ -604,29 +604,27 @@ NaiveBehavior.prototype = {
     $ext.dom.addText(mp, message);
     content.appendChild(mp);
 
-    if(URLParams) {
-      if (URLParams.user_token) {
+    if (URLParams && URLParams.user_token && this.oframp.mv.molecule.molid) {
 
-        var dp2 = document.createElement('p');
-        if (incomplete === true) {
-          var dp3 = document.createElement('p');
-          $ext.dom.addText(dp3, "Or you may click the 'Send missing to ATB' button to compute the charges of the missing"
-            + "(unparameterized) parts of the molecule with the ATB."
-          );
-          content.appendChild(dp3);
+      var dp2 = document.createElement('p');
+      if (incomplete === true) {
+        var dp3 = document.createElement('p');
+        $ext.dom.addText(dp3, "Or you may click the 'Send missing to ATB' button to compute the charges of the missing"
+          + "(unparameterized) parts of the molecule with the ATB."
+        );
+        content.appendChild(dp3);
 
-          $ext.dom.addText(dp2, "Once finished, click the 'Send charges to ATB' button above to send the charges to the ATB "
-            + "to make them available for Force Field parametrisation."
-          );
-        } else {
-          $ext.dom.addText(dp2, "Click the 'Send charges to ATB' button to send your charge assignment to the ATB. "
-            + "If you are done, you can close this window and refresh the ATB molecule's page. "
-            + "A new panel should be available to use the charges in a molecular topology file of your choice."
-          );
-        }
-        content.appendChild(dp2);
-
+        $ext.dom.addText(dp2, "Once finished, click the 'Send charges to ATB' button above to send the charges to the ATB "
+          + "to make them available for Force Field parametrisation."
+        );
+      } else {
+        $ext.dom.addText(dp2, "Click the 'Send charges to ATB' button to send your charge assignment to the ATB. "
+          + "If you are done, you can close this window and refresh the ATB molecule's page. "
+          + "A new panel should be available to use the charges in a molecular topology file of your choice."
+        );
       }
+      content.appendChild(dp2);
+
     }
 
 
@@ -636,40 +634,32 @@ NaiveBehavior.prototype = {
 
     var db = document.createElement('button');
     db.className = "border_box";
-    if(URLParams) {
-      if (URLParams.user_token) {
-
-        if (incomplete === true) {
-          $ext.dom.addText(db, "Send missing to ATB");
-          $ext.dom.onMouseClick(db, transfer_missing, $ext.mouse.LEFT);
-          function transfer_missing() {
-            _this.oframp.mv.molecule.transfer_missing(
-              _this.oframp.settings.atb.api_url,
-              _this.oframp.off,
-              _this.oframp.settings.omfraf.version);
-          }
-        } else {
-          $ext.dom.addText(db, "Send charges to ATB");
-          $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
-          function transfer_charges() {
-            _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
-          }
+    if (URLParams && URLParams.user_token && _this.oframp.mv.molecule.molid) {
+      if (incomplete === true) {
+        $ext.dom.addText(db, "Send missing to ATB");
+        $ext.dom.onMouseClick(db, transfer_missing, $ext.mouse.LEFT);
+        function transfer_missing() {
+          _this.oframp.mv.molecule.transfer_missing(
+            _this.oframp.settings.atb.api_url,
+            _this.oframp.off,
+            _this.oframp.settings.omfraf.version);
         }
-
       } else {
-
-        $ext.dom.addText(db, "Download LGF");
-        $ext.dom.onMouseClick(db, function() {
-          var data = _this.oframp.mv.molecule.getLGF();
-          var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
-          var fname = "OFraMP-" + date + ".lgf";
-          $ext.sendDataForm("save.php", {
-            data: data,
-            fname: fname
-          }, "post", "_blank");
-        }, $ext.mouse.LEFT);
-
+        $ext.dom.addText(db, "Send charges to ATB");
+        $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
+        function transfer_charges() {
+          _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
+        }
       }
+
+    } else {
+
+      $ext.dom.addText(db, "Download LGF");
+      $ext.dom.onMouseClick(db, function() {
+        _this.oframp.hidePopup();
+        _this.oframp.mv.molecule.downloadLGF();
+      }, $ext.mouse.LEFT);
+
     }
     cd.appendChild(db);
 

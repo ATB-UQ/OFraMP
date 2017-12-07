@@ -528,6 +528,17 @@ OFraMP.prototype = {
     var _this = this;
     this.mv.showMolecule(mds, function() {
       _this.checkpoint();
+
+      if (URLParams && URLParams.user_token && _this.mv.molecule.molid) {
+        var sv = document.getElementById("save");
+        sv.style.display = "none";
+      } else {
+        var atb_missing_button = document.getElementById("atb_missing");
+        var atb_button = document.getElementById("atb");
+        atb_button.style.display = "none";
+        atb_missing_button.style.display = "none";
+      }
+
       $ext.dom.dispatchEvent(_this.container, _this.moleculeDisplayedEvent);
       _this.errorControls.style.display = "none";
     }, function(msg) {
@@ -755,7 +766,14 @@ OFraMP.prototype = {
 
     var data = "data=" + encodeURIComponent(queryJSON);
     var repo = this.settings.omfraf.repository;
-    data += (repo ? "&repo=" + repo : "");
+    if (! repo) {
+      if (URLParams) {
+        if (URLParams.repo) {
+          repo = URLParams.repo;
+        }
+      }
+    }
+    data += (repo ? "&repo=" + repo : this.settings.defaults.repo);
     var shell = this.settings.omfraf.shellSize;
     if (! shell) {
         if (URLParams) {
@@ -764,7 +782,7 @@ OFraMP.prototype = {
             }
         }
     }
-    data += "&shell=" + (shell ? shell : this.settings.omfraf.default_shell_size);
+    data += "&shell=" + (shell ? shell : this.settings.defaults.defaultShell);
 
     xhr.open("POST", this.settings.omfraf.generateUrl, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -805,7 +823,8 @@ OFraMP.prototype = {
 
     var queryJSON = JSON.stringify({
       off: this.off,
-      needle: selectionIDs
+      needle: selectionIDs,
+      charged: this.mv.molecule.atoms.getParameterized()
     });
 
     $ext.dom.clear(this.relatedFragments);
@@ -854,26 +873,8 @@ OFraMP.prototype = {
           } else if(fd.error) {
             showError(fd.error);
           } else if(fd.fragments) {
-            $ext.each(fd.fragments, function(fragment) {
-              var overlapCount = 0;
-              $ext.each(fragment.atoms, function(atom) {
-                var orig = this.mv.molecule.atoms.get(atom.id);
-                if(orig.isCharged() && orig.element !== "H") {
-                  overlapCount += 1;
-                }
-              }, this);
-
-              if(overlapCount > 0) {
-                fragment.hasOverlap = true;
-                fragment.score -= overlapCount + 1;
-              }
-            }, _this);
-
-            fragments = fd.fragments.sort(function(a, b) {
-              return b.score - a.score || b.atoms.length - a.atoms.length;
-            });
             _this.hideRelatedFragments();
-            _this.behavior.showRelatedFragments(fragments, selectionIDs);
+            _this.behavior.showRelatedFragments(fd.fragments, selectionIDs);
             $ext.dom.dispatchEvent(_this.container, _this.fragmentsFoundEvent);
           }
         } else {

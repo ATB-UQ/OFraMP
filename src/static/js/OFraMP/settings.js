@@ -61,16 +61,22 @@ var PREDEFINED_MOLECULES = ["CC(NC)CC1=CC=C(OCO2)C2=C1", "c1ccccc1"];
 var DEFAULT_SETTINGS = {
   oapoc: {
     url: "http://fragments.atb.uq.edu.au/oapoc/generate/",
-    loadUrl: "http://fragments.atb.uq.edu.au/oapoc/loadATB/",
+    loadUrl: "http://fragments.atb.uq.edu.au/oapoc/load/",
     version: "1.0"
   },
 
   omfraf: {
-    url: "http://fragments.atb.uq.edu.au/omfraf/load/",
-    repoUrl: "http://fragments.atb.uq.edu.au/omfraf/repos/",
-    generateUrl: "http://fragments.atb.uq.edu.au/omfraf/generate/",
+    url: "http://fragments.atb.uq.edu.au/fdb/fragments/load/",
+    repoUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/repos/",
+    generateUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/generate/",
+    coordsUrl: "http://fragments.atb.uq.edu.ai/fdb/fragments/coordinates/",
     version: "1.0",
-    default_shell_size: "2",
+  },
+
+  defaults: {
+    repo: "qm_1_and_2",
+    defaultShell: 2,
+    maxShell: 5
   },
 
   zoom: {
@@ -172,7 +178,7 @@ var DEFAULT_SETTINGS = {
 };
 
 var SETTINGS_OPTIONS = {
-  "oapoc, omfraf": {
+  "oapoc, omfraf, atb, defaults": {
     hidden: true
   },
 

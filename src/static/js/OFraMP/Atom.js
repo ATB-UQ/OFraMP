@@ -85,7 +85,7 @@ Atom.prototype = {
     // partial_charge label label2 atomType X Y Z initColor
     // Note: X Y Z unknown -> can be 0, initColor unknown -> can be equal to ID
     return $ext.number.format(charge, 1, 3, 0) + "\t" + this.id + "\t"
-        + this.elementID + "\t" + this.iacm + "\t" + "0.000\t0.000\t0.000\t"
+        + this.elementID + "\t" + this.iacm + "\t" + this.x3d + "\t" + this.y3d + "\t" + this.z3d + "\t"
         + this.id + "\t" + "\n";
   },
 

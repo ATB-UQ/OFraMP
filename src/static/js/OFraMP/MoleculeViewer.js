@@ -329,6 +329,35 @@ MoleculeViewer.prototype = {
           md.molid);
 
       if(!fromFDB) {
+        if (!this.molecule.atoms.checkCoordinates()) {
+          this.showOverlay('Computing 3D coordinates...');
+          var _this = this;
+          var xhr = new XMLHttpRequest();
+
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+              if(xhr.status == 200) {
+                var rd = JSON.parse(xhr.responseText);
+                if(rd.error) {
+                  alert(rd.error);
+                } else if(rd.data) {
+                  _this.molecule.atoms.setCoordinates(rd.data);
+                }
+              } else {
+                alert("Could not connect to server, computing 3D coordinates is not possible.");
+              }
+            }
+          };
+
+          var queryJSON = JSON.stringify({
+            molecule: this.molecule.getJSON()
+          });
+          var data = "data=" + encodeURIComponent(queryJSON);
+          xhr.open("POST", this.settings.omfraf.coordsUrl, true);
+          xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhr.send(data);
+        }
+
         var mj = JSON.stringify({
           molecule: this.molecule.getSimpleJSON()
         });
@@ -348,7 +377,7 @@ MoleculeViewer.prototype = {
   },
 
   loadMolecule: function(data) {
-    this.molecule = new Molecule(this, data.atoms, data.bonds, data.dataStr);
+    this.molecule = new Molecule(this, data.atoms, data.bonds, data.dataStr, data.molid);
     this.hideOverlay();
   },
 

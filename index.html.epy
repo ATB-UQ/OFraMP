@@ -59,6 +59,7 @@
         var FDB_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
         var FDB_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
         var FDB_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
+	var FDB_COORDINATES_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/coordinates/";
         var ATB_API_URL = "{{ atb_api_url }}/";
         var DEFAULT_REPO = "qm_1_and_2";
         var DEFAULT_SHELL = 2;
@@ -75,7 +76,8 @@
             url: FDB_URL,
             repoUrl: FDB_REPO_URL,
             generateUrl: FDB_GENERATE_URL,
-            missingUrl: FDB_MISSING_URL
+            missingUrl: FDB_MISSING_URL,
+            coordsUrl: FDB_COORDINATES_URL,
           },
           atb: {
             api_url: ATB_API_URL,
@@ -172,19 +174,11 @@
           }, "post", "_blank");
         }
 
-        /*
         var sv = document.getElementById("save");
         $ext.dom.onMouseClick(sv, downloadLGF, $ext.mouse.LEFT);
         function downloadLGF() {
-          var data = oframp.mv.molecule.getLGF();
-          var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
-          var fname = "OFraMP-" + date + ".lgf";
-          $ext.sendDataForm("save.php", {
-            data: data,
-            fname: fname
-          }, "post", "_blank");
+          oframp.mv.molecule.downloadLGF();
         }
-        */
 
         var atb_missing_button = document.getElementById("atb_missing");
         $ext.dom.onMouseClick(atb_missing_button, transfer_missing, $ext.mouse.LEFT);
@@ -345,26 +339,25 @@
           }
         }
 
-        if(URLParams) {
-          if(URLParams.mds) {
+
+        if (URLParams) {
+          if (URLParams.mds) {
             oframp.submitMDS(URLParams.mds);
-          } else if(URLParams.atb_id) {
+          } else if (URLParams.atb_id) {
             oframp.submitMDS(URLParams.atb_id);
-          } else if(URLParams.oss) {
+          } else if (URLParams.oss) {
             oframp.loadOSS(URLParams.oss);
           }
+        }
 
-          if (URLParams.user_token) {
-          }
-          else {
-            alert(
-              "No ATB user_token was found in the HTTP request. This means that OFraMP will work, but the charges generated will not be saved in the ATB and won't be available to populate topology templates.\n\nTo get an ATB user token, go to the ATB (https://atb.uq.edu.au), log in to your ATB account and go to the ATB page of the molecule of interest. " +
-              "Then, click the 'Fragment-Based Parametrisation with OFraMP' button at the top of the page (requires Partner account on the ATB)." +
-              "\n\nIf you don't have a Partner account, please request one by emailing any of the ATB admins."
-            );
-            atb_button.disabled = true;
-            atb_missing_button.disabled = true;
-          }
+        if (URLParams && URLParams.user_token && URLParams.atb_id) {
+        }
+        else {
+          alert(
+            "No ATB user_token was found in the HTTP request. This means that OFraMP will work, but the charges generated will not be saved in the ATB and won't be available to populate topology templates.\n\nTo get an ATB user token, go to the ATB (https://atb.uq.edu.au), log in to your ATB account and go to the ATB page of the molecule of interest. " +
+            "Then, click the 'Fragment-Based Parametrisation with OFraMP' button at the top of the page (requires Partner account on the ATB)." +
+            "\n\nIf you don't have a Partner account, please request one by emailing any of the ATB admins."
+          );
         }
       };
     </script>
@@ -397,13 +390,7 @@
             Open
           </button>
           <button id="snap" class="border_box" title="Save the current state (Alt+S)">
-            Checkpoint
-          </button>
-          <button id="atb_missing" class="border_box" title="Transfer missing fragments to the ATB">
-            Send missing to ATB
-          </button>
-          <button id="atb" class="border_box" title="Transfer charges to the ATB">
-            Send charges to ATB
+            Save
           </button>
         </div>
 
@@ -413,6 +400,20 @@
           </button>
           <button id="redo" class="border_box" title="Redo last action (Alt+Y / Alt+Shift+Z)">
             Redo
+          </button>
+        </div>
+
+        <div class="bgroup">
+          <button id="save" class="border_box" title="Download LGF file">
+            Download LGF
+          </button>
+        </div>
+        <div class="bgroup">
+          <button id="atb_missing" class="border_box" title="Transfer missing fragments to the ATB">
+            Send missing to ATB
+          </button>
+          <button id="atb" class="border_box" title="Transfer charges to the ATB">
+            Send charges to ATB
           </button>
         </div>
 

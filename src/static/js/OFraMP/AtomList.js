@@ -47,6 +47,34 @@ AtomList.prototype = {
     });
   },
 
+  /**
+   * Returns true if no atom has coordinates (0,0,0).
+   * @returns {boolean}
+   */
+  checkCoordinates: function() {
+    return this.map(function(atom) {
+      return atom.x3d == 0 && atom.y3d == 0 && atom.z3d == 0
+    }).length === 0
+  },
+
+
+  /**
+   * Sets coordinates
+   * @param json
+   */
+  setCoordinates: function(json) {
+    this.each(function(atom) {
+      for (i = 0; i < json.atoms.length; i++) {
+        if (json.atoms[i].elementID == atom.elementID) {
+          atom.x3d = json.atoms[i].x3d
+          atom.y3d = json.atoms[i].y3d
+          atom.z3d = json.atoms[i].z3d
+          break
+        }
+      }
+    })
+  },
+
   getLGF: function() {
     var header = "@nodes\n"
         + "partial_charge\tlabel\tlabel2\tatomType\tcoordX\tcoordY\tcoordZ\t"
@@ -119,6 +147,15 @@ AtomList.prototype = {
   getUnparameterized: function() {
     return $ext.array.filter(this.atoms, function(atom) {
       return !atom.isCharged() && atom.element !== "H";
+    });
+  },
+
+  /**
+   * Get the parameterised atoms.
+   */
+  getParameterized: function() {
+    return $ext.array.filter(this.atoms, function(atom) {
+      return atom.isCharged() && atom.element !== "H";
     });
   },
 
