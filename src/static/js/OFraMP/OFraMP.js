@@ -773,7 +773,7 @@ OFraMP.prototype = {
         }
       }
     }
-    data += (repo ? "&repo=" + repo : this.settings.defaults.repo);
+    data += "&repo=" + (repo ? repo : this.settings.defaults.repo);
     var shell = this.settings.omfraf.shellSize;
     if (! shell) {
         if (URLParams) {

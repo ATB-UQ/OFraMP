@@ -69,7 +69,7 @@ var DEFAULT_SETTINGS = {
     url: "http://fragments.atb.uq.edu.au/fdb/fragments/load/",
     repoUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/repos/",
     generateUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/generate/",
-    coordsUrl: "http://fragments.atb.uq.edu.ai/fdb/fragments/coordinates/",
+    coordsUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/coordinates/",
     version: "1.0",
   },
 
