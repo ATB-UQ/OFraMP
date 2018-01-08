@@ -153,9 +153,11 @@ AtomList.prototype = {
   /**
    * Get the parameterised atoms.
    */
-  getParameterized: function() {
-    return $ext.array.filter(this.atoms, function(atom) {
+  getParameterizedIDs: function() {
+    return $ext.array.map($ext.array.filter(this.atoms, function(atom) {
       return atom.isCharged() && atom.element !== "H";
+    }), function (atom) {
+      return atom.id;
     });
   },
 

@@ -824,7 +824,7 @@ OFraMP.prototype = {
     var queryJSON = JSON.stringify({
       off: this.off,
       needle: selectionIDs,
-      charged: this.mv.molecule.atoms.getParameterized()
+      charged: this.mv.molecule.atoms.getParameterizedIDs()
     });
 
     $ext.dom.clear(this.relatedFragments);
