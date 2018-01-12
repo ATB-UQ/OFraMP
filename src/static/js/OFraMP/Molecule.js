@@ -499,6 +499,7 @@ Molecule.prototype = {
   },
 
   transfer_missing: function(api_url, off, version) {
+    self = this;
     if (URLParams && URLParams.user_token && this.molid) {
       var states = this.atoms.map((atom) => {return atom.getStatus()})
       var no_missing = true;
@@ -531,21 +532,25 @@ Molecule.prototype = {
                 alert(fd.error);
               } else if(fd.missing_fragments) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", api_url + "api/current/fragments/submit_missing_fragments.py", false);
+                xhttp.open("POST", api_url + "api/current/fragments/submit_missing_fragments.py", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.onreadystatechange = function() {
+                  if(this.readyState == 4) {
+                    var data = this.responseText;
+                    if (this.status !== 200) {
+                      alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
+                    } else {
+                      var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
+                      if (should_redirect == true) {
+                        window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + self.molid.toString() + '#panel-oframp';
+                      }
+                    }
+                  }
+                };
                 xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments)
                   + "&atb_token=" + URLParams.user_token
                   + "&timeout=500"
-                  + "&molid=" + _this.molid);
-                var data = xhttp.responseText;
-                if (xhttp.status !== 200) {
-                  alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
-                } else {
-                  var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
-                  if (should_redirect == true) {
-                    window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + _this.molid.toString() + '#panel-oframp';
-                  }
-                }
+                  + "&molid=" + self.molid);
               }
             } else {
               alert("Could not connect to the FDB server.");
