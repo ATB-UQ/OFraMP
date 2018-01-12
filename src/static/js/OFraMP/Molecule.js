@@ -536,14 +536,14 @@ Molecule.prototype = {
                 xhttp.send("missing_fragments=" + JSON.stringify(fd.missing_fragments)
                   + "&atb_token=" + URLParams.user_token
                   + "&timeout=500"
-                  + "&molid=" + this.molid);
+                  + "&molid=" + _this.molid);
                 var data = xhttp.responseText;
                 if (xhttp.status !== 200) {
                   alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
                 } else {
                   var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
                   if (should_redirect == true) {
-                    window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
+                    window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + _this.molid.toString() + '#panel-oframp';
                   }
                 }
               }
