@@ -538,12 +538,9 @@ Molecule.prototype = {
                   if(this.readyState == 4) {
                     var data = this.responseText;
                     if (this.status !== 200) {
-                      alert('Missing fragments could not be sent back to the ATB for topology computation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send missing to ATB" button.')
+                      alert('Missing fragments could not be sent back to the ATB for ab-initio parametrisation. Please checkpoint your work to avoid losing it, and retry later using the "Send missing to ATB" button.')
                     } else {
-                      var should_redirect = confirm("Missing fragments successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
-                      if (should_redirect == true) {
-                        window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + self.molid.toString() + '#panel-oframp';
-                      }
+                      alert("Missing fragments successfully sent to the ATB for ab-initio parametrisation. Once parametrised, they will be incorporated into the fragment database. In the meantime, you can parametrise the missing atoms (red) manually.");
                     }
                   }
                 };
