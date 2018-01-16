@@ -1,7 +1,7 @@
 from os.path import join
 from jinja2 import Template
 
-BASE_SERVER = 'http://fragments.atb.uq.edu.au'
+BASE_SERVER = 'https://fragments.atb.uq.edu.au'
 GOOGLE_ANALYTICS_ID = 'UA-59222530-5'
 
 ATB_API_URL = 'https://atb.uq.edu.au'

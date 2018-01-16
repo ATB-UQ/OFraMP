@@ -60,16 +60,16 @@ var PREDEFINED_MOLECULES = ["CC(NC)CC1=CC=C(OCO2)C2=C1", "c1ccccc1"];
 
 var DEFAULT_SETTINGS = {
   oapoc: {
-    url: "http://fragments.atb.uq.edu.au/oapoc/generate/",
-    loadUrl: "http://fragments.atb.uq.edu.au/oapoc/load/",
+    url: "https://fragments.atb.uq.edu.au/oapoc/generate/",
+    loadUrl: "https://fragments.atb.uq.edu.au/oapoc/load/",
     version: "1.0"
   },
 
   omfraf: {
-    url: "http://fragments.atb.uq.edu.au/fdb/fragments/load/",
-    repoUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/repos/",
-    generateUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/generate/",
-    coordsUrl: "http://fragments.atb.uq.edu.au/fdb/fragments/coordinates/",
+    url: "https://fragments.atb.uq.edu.au/fdb/fragments/load/",
+    repoUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/repos/",
+    generateUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/generate/",
+    coordsUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/coordinates/",
     version: "1.0",
   },
 
