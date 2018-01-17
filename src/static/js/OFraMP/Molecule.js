@@ -24,6 +24,10 @@ Molecule.prototype = {
     this.molid = molid;
   },
 
+  total_charge: function() {
+    return $ext.array.sum(this.atoms.map(function(atom){return atom.charge}));
+  },
+
   /*
    * Convert the basic data of this Molecule to JSON.
    */
