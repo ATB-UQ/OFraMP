@@ -574,6 +574,7 @@ Molecule.prototype = {
       var charge_mapping = this.get_names_and_charges();
 
       var has_undefined_charges = false;
+      var has_integer_total_charge = Math.round(this.total_charge()) === this.total_charge();
       var atoms_with_undefined_charge = [];
       for (var atom_name_and_charge of charge_mapping) {
         if (atom_name_and_charge[1] === undefined) {
@@ -584,6 +585,9 @@ Molecule.prototype = {
 
       if (has_undefined_charges) {
         alert('The charge of some atoms is not defined: ' + atoms_with_undefined_charge.join(', ') + '.\nPlease assign charges and retry.');
+      }
+      else if (! has_integer_total_charge) {
+        alert('The total charge is not an integer. Please edit the charges so that their sum adds to an integer, and resubmit.');
       }
       else {
         var json_mapping = JSON.stringify(charge_mapping);
