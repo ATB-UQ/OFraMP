@@ -557,7 +557,7 @@ Atom.prototype = {
       return this.cache.get('structure.cycle');
     }
 
-    var path = this.list.getTree(this.id, arom).findShortestPath(this.id);
+    var path = this.list.getCycle(this, arom);
     if(path && path.length > 1) {
       if(arom) {
         this.cache.set('structure.aromCycle', path);

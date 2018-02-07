@@ -177,20 +177,70 @@ AtomList.prototype = {
 
     var tree = new Tree(root.id, root);
     var q = [tree];
-    var pq = [[root.id]];
+    var pq = [];
     while(q.length > 0) {
       var n = q.shift();
-      var p = pq.shift();
-      $ext.each(n.value.getBondedAtoms(arom), function(atom) {
-        if(p.indexOf(atom.id) === -1) {
-          q.push(n.addChild(atom.id, atom));
-          pq.push(p.concat(atom.id));
-        } else if(atom.id === root.id && n.parent.key !== atom.id) {
-          n.addChild(atom.id, atom);
-        }
-      });
+      if(pq.indexOf(n.key) === -1) {
+        pq.push(n.key);
+        $ext.each(n.value.getBondedAtoms(arom), function (atom) {
+          if (pq.indexOf(atom.id) === -1) {
+            q.push(n.addChild(atom.id, atom));
+          }
+        });
+      }
     }
     return tree;
+  },
+
+  /*
+   * Get the smallest cycle with Atom a as the root.
+   *
+   * Only take into account the atoms with aromatic bonds if arom is true.
+   */
+  getCycle: function(a, arom) {
+    if(a instanceof Atom) {
+      var root = a;
+    } else if(a === undefined) {
+      var root = this.atoms[0];
+    } else {
+      var root = this.get(a);
+    }
+
+    var q = [root];
+    var pq = [];
+    var pred = {};
+
+    while(q.length > 0) {
+      var n = q.shift();
+      if(pq.indexOf(n.id) === -1) {
+        pq.push(n.id);
+        var nbrs = n.getBondedAtoms(arom);
+        for (i = 0; i < nbrs.length; i++) {
+          var nbr = nbrs[i];
+          if (pq.indexOf(nbr.id) === -1) {
+            q.push(nbr);
+            pred[nbr.id] = n.id;
+          } else if (pred[n.id] !== nbr.id) {
+            var cycle = [];
+            var p = n.id;
+            while (p !== root.id) {
+              cycle.push(this.get(p));
+              p = pred[p];
+            }
+            cycle.push(root);
+            cycle = cycle.reverse();
+            var p = nbr.id;
+            while (p !== root.id) {
+              cycle.push(this.get(p));
+              p = pred[p];
+            }
+            return cycle;
+          }
+        }
+      }
+    }
+
+    return [];
   },
 
   /*
@@ -462,7 +512,11 @@ AtomList.prototype = {
     this.each(function(a) {
       var dx = a.x * f - a.x;
       var dy = a.y * f - a.y;
-      a.move(dx, dy);
+      if (isNaN(dx) || isNaN(dy)) {
+        throw "Moving to nowhere.";
+      } else {
+        a.move(dx, dy);
+      }
     });
 
     this.molecule.mv.deoverlap();
