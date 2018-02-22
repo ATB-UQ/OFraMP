@@ -64,9 +64,7 @@ NaiveBehavior.prototype = {
       return atom.charge;
     });
     // Get the total charge of all atoms in the molecule
-    var tc = $ext.array.sum(this.oframp.mv.molecule.atoms.map(function(atom) {
-      return atom.charge;
-    }));
+    var tc = this.oframp.mv.molecule.total_charge();
     var charge = $ext.number.format($ext.array.sum(cs), 1, 3, 9);
     var cc = document.createElement("span");
     $ext.dom.addText(cc, charge || "unknown");
@@ -116,6 +114,7 @@ NaiveBehavior.prototype = {
             $ext.dom.addText(cc, charge || "undefined");
             _this.oframp.redraw();
             _this.oframp.checkpoint();
+            _this.update_molecule_total_charge();
           }
           cei.disabled = "disabled";
           $ext.dom.addText(ceb, "Edit");
@@ -186,6 +185,10 @@ NaiveBehavior.prototype = {
     $ext.dom.onMouseClick(msb, toggleSelectionEdit, $ext.mouse.LEFT);
 
     this.oframp.showSelectionDetails();
+  },
+
+  update_molecule_total_charge: function() {
+    document.getElementById('total_charge').textContent = ($ext.number.format(this.oframp.mv.molecule.total_charge(), 1, 3, 9) || "unknown");
   },
 
   showRelatedFragments: function(fragments, selectionIDs) {
@@ -646,10 +649,11 @@ NaiveBehavior.prototype = {
         }
       } else {
         $ext.dom.addText(db, "Send charges to ATB");
-        $ext.dom.onMouseClick(atb_button, transfer_charges, $ext.mouse.LEFT);
+        $ext.dom.onMouseClick(db, transfer_charges, $ext.mouse.LEFT);
         function transfer_charges() {
           _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
         }
+        _this.update_molecule_total_charge();
       }
 
     } else {
@@ -681,10 +685,6 @@ NaiveBehavior.prototype = {
     cd.appendChild(cb);
 
     this.oframp.showPopup(title, content, true);
-
-    if (incomplete === false) {
-      _this.oframp.mv.molecule.transfer_charges(_this.oframp.settings.atb.api_url);
-    }
   }
 };
 
