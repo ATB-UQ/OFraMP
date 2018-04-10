@@ -129,13 +129,13 @@ var DEFAULT_SETTINGS = {
       charged: 20
     },
     backgroundColor: {
-      standard: "rgb(255, 255, 255)",
-      charged: "rgb(194, 255, 147)",
-      hover: "rgb(210, 180, 245)",
-      selected: "rgb(150, 140, 205)",
-      preview: "rgb(114, 198, 105)",
-      conflict: "rgb(204, 166,  40)",
-      unparameterizable: "rgb(255, 210, 208)"
+      standard: "rgb(235, 235, 235)", // grey
+      charged: "rgb(194, 255, 147)", // lime green
+      hover: "rgb(210, 180, 245)", // light purple
+      selected: "rgb(150, 140, 205)", // light blue
+      preview: "rgb(114, 198, 105)", // light green
+      conflict: "rgb(204, 166,  40)", // ocre
+      unparameterizable: "rgb(255, 210, 208)" // light red
     },
     borderWidth: {
       standard: 1,
