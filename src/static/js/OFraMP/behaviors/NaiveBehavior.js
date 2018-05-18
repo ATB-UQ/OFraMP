@@ -104,7 +104,7 @@ NaiveBehavior.prototype = {
           }
 
           var oldCharge = atom.charge;
-          var newCharge = parseFloat(cei.value);
+          var newCharge = parseFloat(parseFloat(cei.value).toFixed(3));
           atom.setCharge(newCharge);
           if(oldCharge !== newCharge) {
             var cs = $ext.array.map(selection, function(atom) {

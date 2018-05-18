@@ -592,6 +592,9 @@ Molecule.prototype = {
       }
       else if (! has_integer_total_charge) {
         alert('The total charge is not an integer. Please edit the charges so that their sum adds to an integer, and resubmit.');
+        console.log(
+          this.atoms.map(function(atom){return atom.charge}),
+        );
       }
       else {
         var json_mapping = JSON.stringify(charge_mapping);
