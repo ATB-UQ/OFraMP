@@ -24,8 +24,12 @@ Molecule.prototype = {
     this.molid = molid;
   },
 
-  total_charge: function() {
-    return $ext.array.sum(this.atoms.map(function(atom){return atom.charge}));
+  total_charge: function(sum_partial = true) {
+    return $ext.array.sum(
+      this.atoms.map(
+        function(atom){return atom.charge || (sum_partial ? 0 : undefined)}
+      )
+    );
   },
 
   /*

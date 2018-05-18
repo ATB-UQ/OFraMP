@@ -98,20 +98,20 @@ OFraMP.prototype = {
     this.container.appendChild(rb);
     this.__initRelatedFragments(rb);
 
-    var bb = document.createElement('div');
-    bb.id = "bottombar";
-    bb.className = "bottombar";
-    bb.style.visibility = "";
-    bb.style.textAlign = "center";
-    var bb_1 = document.createElement('span');
-    bb_1.style.fontWeight = 'bold';
-	bb_1.appendChild(document.createTextNode('Molecule total charge: '))
-    var bb_2 = document.createElement('span');
-    bb_2.id = 'total_charge'
-	bb_2.appendChild(document.createTextNode('unknown'))
-    bb.appendChild(bb_1);
-    bb.appendChild(bb_2);
-    this.container.appendChild(bb);
+//    var bb = document.createElement('div');
+//    bb.id = "bottombar";
+//    bb.className = "bottombar";
+//    bb.style.visibility = "";
+//    bb.style.textAlign = "center";
+//    var bb_1 = document.createElement('span');
+//    bb_1.style.fontWeight = 'bold';
+//	bb_1.appendChild(document.createTextNode('Molecule total charge: '))
+//    var bb_2 = document.createElement('span');
+//    bb_2.id = 'total_charge'
+//	bb_2.appendChild(document.createTextNode('unknown'))
+//    bb.appendChild(bb_1);
+//    bb.appendChild(bb_2);
+//    this.container.appendChild(bb);
 
     this.popup = document.createElement('div');
     this.popup.id = "popup";
