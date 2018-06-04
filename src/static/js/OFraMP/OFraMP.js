@@ -226,7 +226,7 @@ OFraMP.prototype = {
         Object.entries(ATOM_STATUSES)
       ).map(
         function(t){
-          return {id: t[0] + 1, element: t[1][0], elementID: 1, iacm: 1, x: 2 * (radius + 5) * t[0] + (radius + 5), y: radius + 5, z: 0., x3d: 0., y3d: 0., z3d: 0., charge: undefined, previewCharge: undefined, usedFragments: [], status: t[1][1], radius: radius}
+          return {id: t[0] + 1, element: t[1][0].replace('_', ' '), elementID: 1, iacm: 1, x: 2 * (radius + 5) * t[0] + (radius + 5), y: radius + 5, z: 0., x3d: 0., y3d: 0., z3d: 0., charge: undefined, previewCharge: undefined, usedFragments: [], status: t[1][1], radius: radius}
         },
       ),
       [],

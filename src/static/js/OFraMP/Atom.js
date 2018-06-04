@@ -42,7 +42,7 @@ Atom.prototype = {
     this.charge = charge;
     this.previewCharge = previewCharge;
     this.usedFragments = usedFragments || new Array();
-    this.status = status || ATOM_STATUSES.normal;
+    this.status = status || ATOM_STATUSES.todo;
     this.radius = radius;
   },
 
@@ -520,7 +520,7 @@ Atom.prototype = {
   },
 
   resetHighlight: function() {
-    this.setHighlight(ATOM_STATUSES.normal);
+    this.setHighlight(ATOM_STATUSES.todo);
   },
 
   /*

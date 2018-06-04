@@ -7,7 +7,7 @@ var MESSAGE_TYPES = {
 };
 
 var ATOM_STATUSES = {
-  normal: 0,
+  to_do: 0,
   missing: 1,
   selected: 2,
   hover: 4,

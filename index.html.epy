@@ -264,7 +264,7 @@
             header.style.paddingLeft = "120px";
           }
 
-          $ext.dom.onMouseClick(toggle, function() {
+          var set_toggle = function() {
             if(extraControlsVisible) {
               header.style.height = "30px";
               toggle.style.backgroundImage = "url('static/img/double_arrow_down.png')";
@@ -274,7 +274,10 @@
               toggle.style.backgroundImage = "url('static/img/double_arrow_up.png')";
               extraControlsVisible = true;
             }
-          }, $ext.mouse.LEFT);
+          };
+
+          $ext.dom.onMouseClick(toggle, set_toggle, $ext.mouse.LEFT);
+          set_toggle();
 
           $ext.dom.addEventListener(window, 'keydown', function(evt) {
             if(!evt.altKey) {
