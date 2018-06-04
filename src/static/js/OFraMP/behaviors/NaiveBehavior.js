@@ -272,6 +272,16 @@ NaiveBehavior.prototype = {
       ab.appendChild(document.createTextNode("Select fragment"));
       fc.appendChild(ab);
 
+      var fragment_total_charge = document.createElement('p')
+	  fragment_total_charge.innerHTML = $ext.number.format(
+		$ext.array.sum(fragment.atoms.map(function(atom){return atom.charge})),
+		1,
+		3,
+		9,
+	  );
+	  fragment_total_charge.className = 'fragment_total_charge';
+	  fc.appendChild(fragment_total_charge);
+
       var fvid = "fragment_" + i;
       var fv = new MoleculeViewer(this.oframp, fvid, fc.id, 228, 130);
       this.relatedFragmentViewers.push(fv);
