@@ -471,9 +471,6 @@
     </div>
 
     <div id="fragment_controls">
-      <button id="find_fragments" class="border_box" title="Find matching fragments">
-        Find fragments
-      </button>
     </div>
 
     <div id="legend">

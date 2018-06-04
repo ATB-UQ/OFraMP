@@ -23,7 +23,20 @@
     font-size: 16px;
 }
 
-#find_fragments, #retry_new, #accept_fragment, #reject_fragment, #view_original {
+#find_fragments {
+    visibility: hidden;
+}
+
+#fragment_controls {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    width: 30%;
+    margin-left: -90px;
+    z-index: 2;
+};
+
+#retry_new, #accept_fragment, #reject_fragment, #view_original {
     position: absolute;
     bottom: 12px;
     left: 50%;

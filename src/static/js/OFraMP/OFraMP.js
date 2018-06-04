@@ -120,10 +120,10 @@ OFraMP.prototype = {
     this.container.appendChild(this.popup);
     this.__initPopup(this.popup);
 
-    var ffb = document.getElementById("find_fragments");
-    $ext.dom.clear(ffb);
-    this.__initFFB(ffb);
-    this.findFragmentsButton = ffb;
+    //var ffb = document.getElementById("find_fragments");
+    //$ext.dom.clear(ffb);
+    //this.__initFFB(ffb);
+    //this.findFragmentsButton = ffb;
 
     var ecd = document.createElement('div');
     ecd.id = "error_controls";
@@ -191,14 +191,15 @@ OFraMP.prototype = {
     var _this = this;
     elem.disabled = "disabled";
     if(this.off) {
-      elem.appendChild(document.createTextNode("Find fragments"));
       $ext.dom.onMouseClick(elem, function() {
         // Make sure the previewed charges are reset.
         _this.mv.previewCharges({});
         _this.getMatchingFragments();
       }, $ext.mouse.LEFT);
     } else {
-      elem.appendChild(document.createTextNode("Loading fragments..."));
+      elem.appendChild(
+		document.createTextNode("Loading fragments...")
+	  );
     }
   },
 
@@ -586,7 +587,7 @@ OFraMP.prototype = {
     this.hideSelectionDetails();
     this.hideRelatedFragments();
     this.hidePopup();
-    this.findFragmentsButton.style.display = "inline-block";
+    //this.findFragmentsButton.style.display = "inline-block";
   },
 
   loadOSS: function(oss) {
@@ -1093,14 +1094,24 @@ OFraMP.prototype = {
     var ffbState = "";
     if(!this.off) {
       ffbState = "disabled";
-      $ext.dom.clear(this.findFragmentsButton);
-      $ext.dom.addText(this.findFragmentsButton, "Loading fragments...");
+      var root = document.getElementById('fragment_controls');
+      $ext.dom.clear(root);
+      var loader_div = document.createElement('div');
+      loader_div.id = 'loader_box';
+      root.appendChild(loader_div);
+	  var loader_text = document.createElement("p");
+      loader_text.innerHTML = 'Loading fragments ...';
+      loader_text.className = 'loader_text';
+      var loader = document.createElement('div');
+      loader.className = 'loader';
+      loader_div.appendChild(loader);
+      loader_div.appendChild(loader_text);
     }
     if(selection && selection.length > 0) {
-      this.findFragmentsButton.disabled = ffbState;
+      //this.findFragmentsButton.disabled = ffbState;
       this.behavior.showSelectionDetails(selection);
     } else {
-      this.findFragmentsButton.disabled = "disabled";
+      //this.findFragmentsButton.disabled = "disabled";
       this.hideSelectionDetails();
     }
 

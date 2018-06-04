@@ -15,7 +15,7 @@ NaiveBehavior.prototype = {
     var _this = this;
     $ext.dom.addEventListener(oframp.container, 'fragmentsgenerated',
         function() {
-          var ffb = document.getElementById("find_fragments");
+          var ffb = document.getElementById("loader_box");
           ffb.style.display = "none";
           oframp.selectionChanged();
         });
