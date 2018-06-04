@@ -2,9 +2,9 @@
  * Data structure for an atom
  */
 function Atom(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge, previewCharge,
-    usedFragments, status) {
+    usedFragments, status, radius) {
   this.__init(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge, previewCharge,
-      usedFragments, status);
+      usedFragments, status, radius);
 }
 
 Atom.prototype = {
@@ -22,9 +22,10 @@ Atom.prototype = {
   previewCharge: undefined,
   usedFragments: undefined,
   status: undefined,
+  radius: undefined,
 
   __init: function(list, id, element, elementID, iacm, x, y, x3d, y3d, z3d, charge,
-      previewCharge, usedFragments, status) {
+      previewCharge, usedFragments, status, radius) {
     this.list = list;
     this.settings = list.settings;
     this.cache = new Cache();
@@ -42,6 +43,7 @@ Atom.prototype = {
     this.previewCharge = previewCharge;
     this.usedFragments = usedFragments || new Array();
     this.status = status || ATOM_STATUSES.normal;
+    this.radius = radius;
   },
 
   /*
@@ -256,6 +258,10 @@ Atom.prototype = {
    * Get the radius of this atom.
    */
   getRadius: function() {
+    if(typeof this.radius !== "undefined"){
+      return this.radius;
+    };
+
     if(this.cache.get('appearance.radius')) {
       return this.cache.get('appearance.radius');
     }

@@ -24,7 +24,7 @@ AtomList.prototype = {
       } else {
         this.atoms.push(new Atom(this, atom.id, atom.element, atom.elementID,
             atom.iacm, atom.x, atom.y, atom.x3d, atom.y3d, atom.z3d, atom.charge, atom.previewCharge,
-            atom.usedFragments, atom.status));
+            atom.usedFragments, atom.status, atom.radius));
       }
     }, this);
   },

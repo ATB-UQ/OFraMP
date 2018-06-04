@@ -299,3 +299,11 @@ select.border_box:active:not(:disabled) {
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1), 0 -1px 2px rgba(0, 0, 0, .1);
     background-color: #FFF;
 }
+
+#legend{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+    padding-left: 50px;
+    padding-bottom: 25px;
+}

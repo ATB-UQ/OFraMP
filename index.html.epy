@@ -473,6 +473,10 @@
       </button>
     </div>
 
+    <div id="legend">
+      <b>Legend</b>
+    </div>
+
     <div id="copyright">
       &copy; 2013-2016 jimivdw | CWI
     </div>
