@@ -271,7 +271,7 @@ SmartBehavior.prototype = {
     rem.each(function(atom, i) {
       if(charges[atom.id]) {
         if(atom.isCharged()
-            && !$ext.number.approx(atom.getPreviewCharge(), atom.charge)) {
+            && !$ext.number.approx(atom.previewCharge, atom.charge)) {
           if(this.oframp.settings.atom.showHAtoms || atom.element !== "H") {
             this.showChargeFixer(atom, rem.slice(i + 1), charges, fragment);
             needsFix = true;

@@ -439,16 +439,15 @@ MoleculeViewer.prototype = {
   previewCharges: function(charges) {
     this.molecule.atoms.each(function(atom) {
       if(charges[atom.id] !== undefined) {
-        atom.previewCharge = charges[atom.id];
-        if(atom.isCharged()
-            && !$ext.number.approx(atom.getPreviewCharge(), atom.charge)) {
+        if(atom.isCharged() && !$ext.number.approx(atom.charge, charges[atom.id])) {
+          atom.previewCharge = charges[atom.id];
           atom.addHighlight(ATOM_STATUSES.conflict);
         } else {
+          atom.previewCharge = charges[atom.id];
           atom.removeHighlight(ATOM_STATUSES.conflict);
           atom.addHighlight(ATOM_STATUSES.preview);
         }
       } else {
-        atom.previewCharge = undefined;
         atom.removeHighlight(ATOM_STATUSES.preview | ATOM_STATUSES.conflict);
       }
     });
