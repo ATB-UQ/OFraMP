@@ -485,6 +485,7 @@
 
     <div id="loader">
       <p>Please be patient as the Online tool for Fragment-based Molecule Parameterisation is being loaded.</p>
+      <div class='loader'></div>
     </div>
   </body>
 </html>

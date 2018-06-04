@@ -867,6 +867,9 @@ OFraMP.prototype = {
 
     var ep = document.createElement('p');
     var exp = "Please stand by as the fragments are being loaded.";
+    var loader = document.createElement('p');
+    loader.className = 'loader';
+	ep.appendChild(loader);
     ep.appendChild(document.createTextNode(exp));
     this.relatedFragments.appendChild(ep);
     this.showRelatedFragments();

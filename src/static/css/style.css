@@ -308,6 +308,13 @@ select.border_box:active:not(:disabled) {
     padding-bottom: 25px;
 }
 
+
+p .loader {
+	padding-top: 0px !important;
+    float: left;
+    margin-right: 15px !important;
+}
+
 .loader {
     border: 0.35rem solid #000000; /* Light grey */
     border-top: 0.35rem solid #3498db; /* Blue */
