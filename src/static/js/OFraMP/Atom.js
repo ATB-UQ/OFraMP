@@ -404,8 +404,8 @@ Atom.prototype = {
       return this.settings.atom.backgroundColor["hover"];
     } else if(this.isCharged()) {
       return this.settings.atom.backgroundColor["charged"];
-    } else if(status === ATOM_STATUSES.unparameterizable) {
-      return this.settings.atom.backgroundColor["unparameterizable"];
+    } else if(status === ATOM_STATUSES.missing) {
+      return this.settings.atom.backgroundColor["missing"];
     } else {
       return this.settings.atom.backgroundColor["standard"];
     }

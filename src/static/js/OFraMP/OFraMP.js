@@ -41,7 +41,7 @@ OFraMP.prototype = {
     settings.fragment = $ext.deepCopy(settings);
     // Ugly way to achieve this, but cannot do it otherwise currently.
     settings.fragment.atom.backgroundColor.charged = settings.fragment.atom.backgroundColor.standard;
-    settings.fragment.atom.backgroundColor.unparameterizable = "rgb(76, 132,  70)";
+    // settings.fragment.atom.backgroundColor.missing = "rgb(76, 132, 70)";
     SETTINGS_OPTIONS.fragment = $ext.deepCopy(SETTINGS_OPTIONS);
     this.settings = settings;
 
@@ -782,7 +782,7 @@ OFraMP.prototype = {
             _this.off_missing = fd.missing_atoms;
             $ext.each(fd.missing_atoms, function(aid) {
               _this.mv.molecule.atoms.get(aid).addHighlight(
-                  ATOM_STATUSES.unparameterizable);
+                  ATOM_STATUSES.missing);
             });
             _this.redraw();
             $ext.dom.dispatchEvent(_this.container,
@@ -1004,7 +1004,7 @@ OFraMP.prototype = {
         return this.molecule.atoms.get(oid);
       }, this);
       $ext.each(_this.getShellAtoms(this.molecule, oas), function(atom) {
-        atom.addHighlight(ATOM_STATUSES.unparameterizable);
+        atom.addHighlight(ATOM_STATUSES.missing);
       });
       this.molecule.centerOnAtoms(oas);
       this.hideOverlay();

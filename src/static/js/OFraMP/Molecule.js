@@ -512,14 +512,14 @@ Molecule.prototype = {
       var states = this.atoms.map((atom) => {return atom.getStatus()})
       var no_missing = true;
       for (var status of states) {
-        if (status === ATOM_STATUSES.unparameterizable) {
+        if (status === ATOM_STATUSES.missing) {
           no_missing = false;
           break;
         }
       }
 
       if (no_missing) {
-        alert('There are no unparameterizable atoms.');
+        alert('There are no missing atoms.');
       } else {
 
         var xhr = new XMLHttpRequest();

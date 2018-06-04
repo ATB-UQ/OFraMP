@@ -73,9 +73,9 @@ NaiveBehavior.prototype = {
     $ext.dom.addTableRow(dt, "" + uas.length, "Unparameterised");
     $ext.dom.addTableRow(dt, "" + (selection.length - uas.length),
         "Parameterised");
-    $ext.dom.addTableRow(dt, cc, "Total charge");
+    $ext.dom.addTableRow(dt, cc, "Selection total charge");
     var table_cell = $ext.dom.addTableRow(dt, $ext.number.format(tc, 1, 3, 9) || "unknown",
-        "Molecule charge").children[1];
+        "Molecule total charge").children[1];
     table_cell.id = 'total_charge';
 
     var sadlc = document.createElement("table");

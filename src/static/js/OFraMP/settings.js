@@ -8,7 +8,7 @@ var MESSAGE_TYPES = {
 
 var ATOM_STATUSES = {
   normal: 0,
-  unparameterizable: 1,
+  missing: 1,
   selected: 2,
   hover: 4,
   preview: 8,
@@ -135,7 +135,7 @@ var DEFAULT_SETTINGS = {
       selected: "rgb(150, 140, 205)", // light blue
       preview: "rgb(114, 198, 105)", // light green
       conflict: "rgb(204, 166,  40)", // ocre
-      unparameterizable: "rgb(255, 210, 208)" // light red
+      missing: "rgb(255, 210, 208)" // light red
     },
     borderWidth: {
       standard: 1,
@@ -306,7 +306,7 @@ var SETTINGS_OPTIONS = {
       }
     },
     backgroundColor: {
-      "standard, charged, hover, selected, preview, conflict, unparameterizable": {
+      "standard, charged, hover, selected, preview, conflict, missing": {
         onChange: function() {
           this.__gui.getRootObject().getMV().redraw();
         }
