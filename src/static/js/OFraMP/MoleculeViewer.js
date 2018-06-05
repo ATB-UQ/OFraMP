@@ -437,17 +437,26 @@ MoleculeViewer.prototype = {
    * Preview the charges given as a mapping from atom IDs to charges.
    */
   previewCharges: function(charges) {
+    var showH = this.settings.atom.showHAtoms;
     this.molecule.atoms.each(function(atom) {
       if(charges[atom.id] !== undefined) {
-        if(atom.isCharged() && !$ext.number.approx(atom.charge, charges[atom.id])) {
-          atom.previewCharge = charges[atom.id];
+        var previewCharge = charges[atom.id];
+        if (!showH) {
+          $ext.each(atom.getHydrogenAtoms(), function (hydrogen) {
+            if (charges[hydrogen.id] !== undefined) {
+              previewCharge += charges[hydrogen.id];
+            }
+          })
+        }
+        if (atom.isCharged() && !$ext.number.approx(atom.getCharge(), previewCharge)) {
           atom.addHighlight(ATOM_STATUSES.conflict);
         } else {
-          atom.previewCharge = charges[atom.id];
           atom.removeHighlight(ATOM_STATUSES.conflict);
           atom.addHighlight(ATOM_STATUSES.preview);
         }
+        atom.previewCharge = charges[atom.id];
       } else {
+        atom.previewCharge = undefined;
         atom.removeHighlight(ATOM_STATUSES.preview | ATOM_STATUSES.conflict);
       }
     });
@@ -464,7 +473,7 @@ MoleculeViewer.prototype = {
     this.molecule.atoms.each(function(atom, i) {
       if(charges[atom.id] !== undefined) {
         if(atom.isCharged()
-            && !$ext.number.approx(atom.getPreviewCharge(), atom.charge)) {
+            && !$ext.number.approx(charges[atom.id], atom.charge)) {
           if(this.oframp.settings.atom.showHAtoms || atom.element !== "H") {
             this.oframp.behavior.showChargeFixer(atom, this.molecule.atoms
                 .slice(i + 1), charges, fragment);
@@ -472,6 +481,7 @@ MoleculeViewer.prototype = {
             return $ext.BREAK;
           }
         } else {
+          atom.previewCharge = undefined;
           atom.setCharge(charges[atom.id], fragment);
           atom.resetHighlight();
         }

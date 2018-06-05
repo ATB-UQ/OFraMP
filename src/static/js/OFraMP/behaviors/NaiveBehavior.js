@@ -462,16 +462,30 @@ NaiveBehavior.prototype = {
     var dtc = document.createElement('table');
     var dt = document.createElement('tbody');
     dtc.appendChild(dt);
+
+    var current_charge = $ext.number.format(atom.getCharge(), 1, 3, 9);
+    var other_charge = current_charge;
+    var avg_charge = current_charge;
+    if (charges[atom.id] !== undefined) {
+      other_charge = charges[atom.id];
+      if (!this.oframp.settings.atom.showHAtoms) {
+        $ext.each(atom.getHydrogenAtoms(), function (hydrogen) {
+          if (charges[hydrogen.id] !== undefined) {
+            other_charge += charges[hydrogen.id];
+          }
+        })
+      }
+      avg_charge = $ext.number.format((atom.getCharge() + other_charge) / 2, 1, 3, 9);
+      other_charge = $ext.number.format(other_charge, 1, 3, 9);
+    }
+
     $ext.dom.addTableRow(dt, atom.getLabel(), "Element");
-    $ext.dom.addTableRow(dt, $ext.number.format(atom.getCharge(), 1, 3, 9),
-        "Current charge");
-    $ext.dom.addTableRow(dt, $ext.number.format(atom.getPreviewCharge(), 1, 3,
-        9), "Fragment charge");
+    $ext.dom.addTableRow(dt, current_charge, "Current charge");
+    $ext.dom.addTableRow(dt, other_charge, "Fragment charge");
 
     var rc = document.createElement('input');
     rc.disabled = "disabled";
-    rc.value = $ext.number.format(
-        (atom.getCharge() + atom.getPreviewCharge()) / 2, 1, 3, 9);
+    rc.value = avg_charge;
 
     var ss = document.createElement('select');
     ss.className = "border_box";
@@ -487,15 +501,15 @@ NaiveBehavior.prototype = {
       var value = rc.value;
       switch(ss.value) {
         case "current":
-          value = atom.getCharge();
+          value = current_charge;
           break;
 
         case "other":
-          value = atom.getPreviewCharge();
+          value = other_charge;
           break;
 
         case "average":
-          value = (atom.getCharge() + atom.getPreviewCharge()) / 2;
+          value = avg_charge;
           break;
 
         case "custom":
@@ -516,7 +530,7 @@ NaiveBehavior.prototype = {
     rb.appendChild(document.createTextNode("Apply solution"));
     content.appendChild(rb);
 
-    function getResultingCharge(atom, method) {
+    function getResultingCharge(atom, method, charges) {
       var value = rc.value;
       switch(method) {
         case "current":
@@ -524,25 +538,35 @@ NaiveBehavior.prototype = {
           break;
 
         case "other":
-          value = atom.previewCharge;
+          if (charges[atom.id] !== undefined) {
+            value = charges[atom.id];
+          } else {
+            value = atom.charge;
+          }
           break;
 
         case "average":
-          value = (atom.charge + atom.previewCharge) / 2;
+          if (charges[atom.id] !== undefined) {
+            value = (atom.charge + charges[atom.id]) / 2;
+          } else {
+            value = atom.charge;
+          }
           break;
       }
-      return parseFloat(value) || undefined;
+      return parseFloat($ext.number.format(value, 1, 3, 9)) || undefined;
     }
 
     var _this = this;
     $ext.dom.onMouseClick(rb, function() {
-      atom.setCharge(getResultingCharge(atom, ss.value), fragment);
+      atom.setCharge(getResultingCharge(atom, ss.value, charges), fragment);
       if(!_this.oframp.settings.atom.showHAtoms) {
         $ext.each(atom.getHydrogenAtoms(), function(a) {
-          a.setCharge(getResultingCharge(a, ss.value), fragment);
+          a.setCharge(getResultingCharge(a, ss.value, charges), fragment);
+          a.previewCharge = undefined;
           a.resetHighlight();
         });
       }
+      atom.previewCharge = undefined;
       atom.resetHighlight();
       _this.oframp.hidePopup();
 
@@ -550,7 +574,7 @@ NaiveBehavior.prototype = {
       rem.each(function(atom, i) {
         if(charges[atom.id]) {
           if(atom.isCharged()
-              && !$ext.number.approx(atom.previewCharge, atom.charge)) {
+              && !$ext.number.approx(charges[atom.id], atom.charge)) {
             if(this.oframp.settings.atom.showHAtoms || atom.element !== "H") {
               this.showChargeFixer(atom, rem.slice(i + 1), charges, fragment);
               needsFix = true;
