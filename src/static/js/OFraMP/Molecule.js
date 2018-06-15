@@ -578,7 +578,10 @@ Molecule.prototype = {
       var charge_mapping = this.get_names_and_charges();
 
       var has_undefined_charges = false;
-      var has_integer_total_charge = Math.round(this.total_charge()) === this.total_charge();
+
+      var truncate = function(x, n){return Math.trunc(x * Math.pow(10, n)) / Math.pow(10, n) };
+
+      var has_integer_total_charge = Math.round(this.total_charge()) === truncate(this.total_charge(), 3);
       var atoms_with_undefined_charge = [];
       for (var atom_name_and_charge of charge_mapping) {
         if (atom_name_and_charge[1] === undefined) {
