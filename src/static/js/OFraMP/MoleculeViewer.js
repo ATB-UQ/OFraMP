@@ -325,8 +325,7 @@ MoleculeViewer.prototype = {
   showMolecule: function(dataStr, success, failure, fromFDB) {
     this.getMoleculeData(dataStr, function(md) {
       this.showOverlay("Initializing molecule...");
-      this.molecule = new Molecule(this, md.atoms, md.bonds, md.dataStr,
-          md.molid);
+      this.molecule = new Molecule(this, md.atoms, md.bonds, md.dataStr || md.molid, md.molid);
 
       if(!fromFDB) {
         if (!this.molecule.atoms.checkCoordinates()) {
