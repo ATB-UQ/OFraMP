@@ -604,10 +604,16 @@ Molecule.prototype = {
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", api_url + "api/current/molecules/oframp_charges.py", false);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("molid=" + this.molid + "&json_mapping=" + json_mapping + "&user_token=" + URLParams.user_token);
+        xhttp.send("molid=" + this.molid + "&json_mapping=" + json_mapping + "&user_token=" + URLParams.user_token + "&api_format=json&ajax=True");
         var data = xhttp.responseText;
         if (xhttp.status !== 200) {
-           alert('Charge assignment could not be sent back to the ATB for topology generation. Please checkpoint your work to avoid losing it, and retry in a while using the "Send to ATB" button.')
+           try{
+             var error_message = JSON.parse(xhttp.responseText).error;
+           }
+           catch(e){
+             var error_message = "Could not decode API JSON output: " + xhttp.responseText;
+           }
+           alert('Charge assignment could not be sent back to the ATB for topology generation (error was: "' + error_message + '"). Please checkpoint your work to avoid losing it, and retry in a while using the "Send to ATB" button.')
         }
         else {
           var should_redirect = confirm("Charge assignment successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
