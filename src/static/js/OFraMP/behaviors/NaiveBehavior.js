@@ -65,18 +65,64 @@ NaiveBehavior.prototype = {
     });
     // Get the total charge of all atoms in the molecule
     var tc = this.oframp.mv.molecule.total_charge();
-    var charge = $ext.number.format($ext.array.sum(cs), 1, 3, 9);
+    var gc = $ext.array.sum(cs);
     var cc = document.createElement("span");
-    $ext.dom.addText(cc, charge || "unknown");
+    $ext.dom.addText(cc, $ext.number.format(gc, 1, 3, 9) || "unknown");
 
     $ext.dom.addTableRow(dt, "" + selection.length, "Atom count");
     $ext.dom.addTableRow(dt, "" + uas.length, "Unparameterised");
     $ext.dom.addTableRow(dt, "" + (selection.length - uas.length),
         "Parameterised");
-    $ext.dom.addTableRow(dt, cc, "Selection total charge");
-    var table_cell = $ext.dom.addTableRow(dt, $ext.number.format(tc, 1, 3, 9) || "unknown",
+    var table_cell = $ext.dom.addTableRow(dt, cc, "Selection group total charge").children[1];
+    table_cell.id = 'selection_total_charge';
+
+    var sscb = document.createElement("button");
+    sscb.className = "border_box";
+    sscb.appendChild(document.createTextNode("Set group to"));
+
+    var ssci = document.createElement("input");
+
+    var max_gc = Math.max(Math.ceil(Math.abs(gc)), 2);
+    ssci.setAttribute("type", "number");
+    ssci.setAttribute("min", (-max_gc).toString());
+    ssci.setAttribute("max", max_gc.toString());
+    ssci.setAttribute("step", "1");
+    ssci.setAttribute("value", "0");
+
+    var setSelTC = function() {
+      _this.setIntegerCharge(selection, ssci.value);
+      _this.update_atomic_charges(selection);
+      _this.update_selection_total_charge(selection);
+      _this.update_molecule_total_charge();
+    }
+    $ext.dom.onMouseClick(sscb, setSelTC, $ext.mouse.LEFT);
+    $ext.dom.addTableRow(dt, [sscb, ssci]);
+
+    table_cell = $ext.dom.addTableRow(dt, $ext.number.format(tc, 1, 3, 9) || "unknown",
         "Molecule total charge").children[1];
     table_cell.id = 'total_charge';
+
+    var smcb = document.createElement("button");
+    smcb.className = "border_box";
+    smcb.appendChild(document.createTextNode("Set total to"));
+
+    var smci = document.createElement("input");
+
+    var max_tc = Math.max(Math.ceil(Math.abs(tc)), 2);
+    smci.setAttribute("type", "number");
+    smci.setAttribute("min", (-max_tc).toString());
+    smci.setAttribute("max", max_tc.toString());
+    smci.setAttribute("step", "1");
+    smci.setAttribute("value", "0");
+
+    var setMolTC = function() {
+      _this.setIntegerCharge(_this.oframp.mv.molecule.atoms.atoms, smci.value);
+      _this.update_atomic_charges(selection);
+      _this.update_selection_total_charge(selection);
+      _this.update_molecule_total_charge();
+    }
+    $ext.dom.onMouseClick(smcb, setMolTC, $ext.mouse.LEFT);
+    $ext.dom.addTableRow(dt, [smcb, smci]);
 
     var sadlc = document.createElement("table");
     var sadl = document.createElement('tbody');
@@ -86,6 +132,7 @@ NaiveBehavior.prototype = {
     $ext.dom.addTableRow(sadl, [], ["Elem", "Charge", "Edit", "Frags"]);
     $ext.each(selection, function(atom) {
       var cei = document.createElement('input');
+      cei.id = "input_" + atom.id.toString();
       cei.disabled = "disabled";
       cei.value = $ext.number.format(atom.charge, 1, 3, 9) || "";
 
@@ -115,6 +162,8 @@ NaiveBehavior.prototype = {
             $ext.dom.addText(cc, charge || "undefined");
             _this.oframp.redraw();
             _this.oframp.checkpoint();
+            _this.update_atomic_charges(selection);
+            _this.update_selection_total_charge(selection);
             _this.update_molecule_total_charge();
           }
           cei.disabled = "disabled";
@@ -186,6 +235,21 @@ NaiveBehavior.prototype = {
     $ext.dom.onMouseClick(msb, toggleSelectionEdit, $ext.mouse.LEFT);
 
     this.oframp.showSelectionDetails();
+  },
+
+  update_atomic_charges: function(selection) {
+    for (i = 0; i < selection.length; i++) {
+      var atom = selection[i];
+      document.getElementById("input_" + atom.id.toString()).value = $ext.number.format(atom.charge, 1, 3, 9) || "";
+    }
+  },
+
+  update_selection_total_charge: function(selection) {
+    var cs = $ext.array.map(selection, function (atom) {
+      return atom.charge;
+    });
+    var charge = $ext.number.format($ext.array.sum(cs), 1, 3, 9);
+    document.getElementById('selection_total_charge').textContent = charge || "unknown";
   },
 
   update_molecule_total_charge: function() {
@@ -274,11 +338,7 @@ NaiveBehavior.prototype = {
 
       var fragment_total_charge = document.createElement('p')
 	  fragment_total_charge.innerHTML = $ext.number.format(
-		$ext.array.sum(fragment.atoms.map(function(atom){return atom.charge})),
-		1,
-		3,
-		9,
-	  );
+		$ext.array.sum(fragment.atoms.map(function(atom){return atom.charge})), 1, 3, 9);
 	  fragment_total_charge.className = 'fragment_total_charge';
 	  fc.appendChild(fragment_total_charge);
 
@@ -404,6 +464,56 @@ NaiveBehavior.prototype = {
     }, this);
 
     this.oframp.showRelatedFragments();
+  },
+
+  setIntegerCharge: function(selection, total_charge) {
+    if(total_charge && !$ext.number.isNumeric(total_charge)) {
+      alert("Only numeric values are allowed for the total charge.");
+      return;
+    }
+
+    total_charge = Math.round(parseFloat(total_charge));
+
+    if (selection.length === 1) {
+      var oldCharge = selection[0].charge;
+      if (oldCharge !== total_charge) {
+        selection[0].setCharge(total_charge);
+
+        this.oframp.redraw();
+        this.oframp.checkpoint();
+      }
+    } else if (selection.length > 1) {
+      var blowup = Math.pow(10, 3);
+      var deflate = 1/blowup;
+      total_charge = Math.round(total_charge*blowup);
+      var oldCharge = 0;
+      var undef = false;
+      for (i = 0; i < selection.length; i++) {
+        if (selection[i].charge) {
+          oldCharge += Math.round(selection[i].charge*blowup);
+        } else if (selection[i].charge === undefined) {
+          selection[i].setCharge(0.0);
+          undef = true;
+        }
+      }
+      if (oldCharge !== total_charge) {
+        var modifier = Math.trunc((total_charge - oldCharge) / selection.length);
+        var last_modifier = modifier + (total_charge - oldCharge) % selection.length;
+
+        if (modifier !== 0) {
+          for (i = 0; i < selection.length - 1; i++) {
+            var newCharge = deflate*Math.trunc((blowup*selection[i].charge) + modifier);
+            selection[i].setCharge(newCharge);
+          }
+        }
+        var newCharge = deflate*Math.trunc((blowup*selection[selection.length-1].charge) + last_modifier);
+        selection[selection.length-1].setCharge(newCharge);
+      }
+      if (oldCharge !== total_charge || undef) {
+        this.oframp.redraw();
+        this.oframp.checkpoint();
+      }
+    }
   },
 
   selectionChanged: function() {
@@ -641,6 +751,50 @@ NaiveBehavior.prototype = {
     var mp = document.createElement('p');
     $ext.dom.addText(mp, message);
     content.appendChild(mp);
+
+    var total_charge = this.oframp.mv.molecule.total_charge();
+    var truncate = function(x, n){return Math.trunc(x * Math.pow(10, n)) / Math.pow(10, n) };
+    var has_integer_total_charge = Math.round(total_charge) === truncate(total_charge, 3);
+    if (!has_integer_total_charge) {
+      var dp2 = document.createElement('p');
+      $ext.dom.addText(dp2, "The total charge is not an integer. Please edit the charges so that their sum adds to an "
+        + "integer or let OFraMP distribute the difference to an integer charge over all atoms:");
+      content.appendChild(dp2);
+
+      var td = document.createElement("div");
+      var dtc = document.createElement('table');
+      dtc.setAttribute("style", "width: 50%; margin: auto;");
+      var dt = document.createElement('tbody');
+      dtc.appendChild(dt);
+      td.appendChild(dtc);
+      content.appendChild(td);
+
+      var table_cell = $ext.dom.addTableRow(dt, $ext.number.format(total_charge, 1, 3, 9) || "unknown",
+        "Molecule total charge").children[1];
+      table_cell.id = 'mol_total_charge';
+
+      var smcb = document.createElement("button");
+      smcb.className = "border_box";
+      smcb.appendChild(document.createTextNode("Set total to"));
+
+      var smci = document.createElement("input");
+
+      var max_tc = Math.max(Math.ceil(Math.abs(total_charge)), 2);
+      smci.setAttribute("type", "number");
+      smci.setAttribute("min", (-max_tc).toString());
+      smci.setAttribute("max", max_tc.toString());
+      smci.setAttribute("step", "1");
+      smci.setAttribute("value", "0");
+
+      var setMolTC = function() {
+        _this.setIntegerCharge(_this.oframp.mv.molecule.atoms.atoms, smci.value);
+        total_charge = _this.oframp.mv.molecule.total_charge()
+        document.getElementById('mol_total_charge').textContent = ($ext.number.format(total_charge, 1, 3, 9) || "unknown");
+      }
+      $ext.dom.onMouseClick(smcb, setMolTC, $ext.mouse.LEFT);
+      $ext.dom.addTableRow(dt, [smcb, smci]);
+
+    }
 
     if (URLParams && URLParams.user_token && this.oframp.mv.molecule.molid) {
 
