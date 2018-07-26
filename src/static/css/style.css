@@ -156,6 +156,7 @@ html, body {
 
 #leftbar {
     left: 10px;
+    bottom: 120px !important;
 }
 
 #rightbar {
