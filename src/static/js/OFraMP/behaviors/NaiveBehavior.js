@@ -128,7 +128,7 @@ NaiveBehavior.prototype = {
     var sadl = document.createElement('tbody');
     sadlc.appendChild(sadl);
     sadl.id = "selected_atom_details";
-    sadl.style.display = "none";
+    sadl.style.display = "table";
     $ext.dom.addTableRow(sadl, [], ["Elem", "Charge", "Edit", "Frags"]);
     $ext.each(selection, function(atom) {
       var cei = document.createElement('input');
@@ -199,7 +199,7 @@ NaiveBehavior.prototype = {
 
     var satb = document.createElement("button");
     satb.className = "border_box";
-    $ext.dom.addText(satb, "Show");
+    $ext.dom.addText(satb, "Hide");
     $ext.dom.onMouseClick(satb, function() {
       $ext.dom.clear(satb);
       if(sadl.style.display === "table") {

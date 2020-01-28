@@ -548,7 +548,7 @@ Molecule.prototype = {
                     if (this.status !== 200) {
                       alert('Missing fragments could not be sent back to the ATB for ab-initio parametrisation. Please checkpoint your work to avoid losing it, and retry later using the "Send missing to ATB" button.')
                     } else {
-                      alert("Missing fragments successfully sent to the ATB for ab-initio parametrisation. Once parametrised, they will be incorporated into the fragment database. In the meantime, you can parametrise the missing atoms (red) manually.");
+                      alert("Missing fragments successfully sent to the ATB for ab-initio parametrisation. Once parametrised, they will be incorporated into the fragment database. In the meantime, you can parametrise the missing atoms (pink) manually.");
                     }
                   }
                 };

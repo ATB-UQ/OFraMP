@@ -74,7 +74,7 @@ var DEFAULT_SETTINGS = {
   },
 
   defaults: {
-    repo: "qm_1_and_2",
+    repo: "ATB3",
     defaultShell: 2,
     maxShell: 5
   },

@@ -61,7 +61,7 @@
         var FDB_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
 	var FDB_COORDINATES_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/coordinates/";
         var ATB_API_URL = "{{ atb_api_url }}/";
-        var DEFAULT_REPO = "ATB3_0";
+        var DEFAULT_REPO = "ATB3";
         var DEFAULT_SHELL = 2;
         var MAX_SHELL = 5;
 

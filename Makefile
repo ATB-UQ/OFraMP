@@ -1,5 +1,5 @@
-install: index.html
+install: src/index.html
 .PHONY: install
 
-index.html:
+src/index.html:
 	python jinja_renderer.py
