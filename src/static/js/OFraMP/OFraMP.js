@@ -353,9 +353,7 @@ OFraMP.prototype = {
     }
 
     var dp = document.createElement('p');
-    $ext.dom.addText(dp, "If you are here for the first time, it might be a "
-        + "good idea to take the guided demo. This can be started using the "
-        + "'Start demo' button below. More help is available by clicking the "
+    $ext.dom.addText(dp, "Help is available by clicking the "
         + "'Help' button below. Otherwise, you can continue to the "
         + "molecule input by clicking the 'New molecule' button.");
     content.appendChild(dp);
@@ -398,14 +396,14 @@ OFraMP.prototype = {
     }, $ext.mouse.LEFT);
     cd.appendChild(nb);
 
-    var db = document.createElement('button');
-    db.className = "border_box";
-    $ext.dom.addText(db, "Start demo");
-    $ext.dom.onMouseClick(db, function() {
-      rememberCookie();
-      _this.behavior.demo.start();
-    }, $ext.mouse.LEFT);
-    cd.appendChild(db);
+    //var db = document.createElement('button');
+    //db.className = "border_box";
+    //$ext.dom.addText(db, "Start demo");
+    //$ext.dom.onMouseClick(db, function() {
+    //  rememberCookie();
+    //  _this.behavior.demo.start();
+    //}, $ext.mouse.LEFT);
+    //cd.appendChild(db);
 
     var hb = document.createElement('button');
     hb.className = "border_box";
@@ -424,13 +422,13 @@ OFraMP.prototype = {
 
     $ext.dom.removeClass(this.popup, "warning");
 
-    var title = "Please enter a molecule data string";
+    var title = "Please enter an ATB molecule identification number";
 
     var content = document.createElement('div');
 
     var ta = document.createElement('textarea');
     ta.id = "mds_input";
-    ta.style.height = this.popup.clientHeight - 136 + "px";
+    ta.style.height = "25px" //this.popup.clientHeight - 136 + "px";
     ta.placeholder = "Insert ATB ID here";
     content.appendChild(ta);
 
@@ -505,6 +503,17 @@ OFraMP.prototype = {
     }
     cbs.appendChild(sb);
 
+    if(this.mv.molecule) {
+      var cb = document.createElement('button');
+      $ext.dom.setFloat(cb, "left");
+      cb.className = "border_box";
+      cbs.appendChild(cb);
+      $ext.dom.addText(cb, "Cancel");
+      cb.onclick = function() {
+        _this.hidePopup();
+      }
+    }
+
     if(BrowserDetect.browser !== "Explorer" || BrowserDetect.version > 9) {
       var ossi = document.createElement("input");
       ossi.type = "file";
@@ -526,6 +535,7 @@ OFraMP.prototype = {
       cbs.appendChild(ossi);
 
       var lb = document.createElement('button');
+      $ext.dom.setFloat(lb, "left");
       lb.id = "load_oss";
       lb.className = "border_box";
       lb.appendChild(document.createTextNode("Load from OSS file"));
@@ -535,28 +545,15 @@ OFraMP.prototype = {
       cbs.appendChild(lb);
     }
 
-    var cb = document.createElement('button');
-    $ext.dom.setFloat(cb, "left");
-    cb.className = "border_box";
-    cbs.appendChild(cb);
-
-    if(this.mv.molecule) {
-      $ext.dom.addText(cb, "Cancel");
-      cb.onclick = function() {
-        _this.hidePopup();
-      }
-    } else {
-      $ext.dom.addText(cb, "Start demo");
-      cb.onclick = function() {
-        _this.behavior.demo.start();
-      }
-    }
-
     this.showPopup(title, content, this.mv.molecule !== undefined);
     ta.focus();
   },
 
   submitMDS: function(mds) {
+    if (isNaN(mds)){
+	  alert("Please provide a valid ATB molecule ID.");
+	  return;	
+	}
     var _this = this;
     this.mv.showMolecule(mds, function() {
       _this.checkpoint();
@@ -564,6 +561,13 @@ OFraMP.prototype = {
       if (URLParams && URLParams.user_token && _this.mv.molecule.molid) {
         var sv = document.getElementById("save");
         sv.style.display = "none";
+        if(_this.mv.molecule.atoms.count() > 2000) {
+          document.getElementById("loader2").remove();
+          document.getElementById("loader_text").remove();
+          document.getElementById("loader_text2").innerHTML = "Query molecule is over 2000 atoms.";
+        } else {
+          document.getElementById("loader_text2").innerHTML = "Your estimated waiting time is: " + Math.round(_this.mv.molecule.atoms.count()*0.0193 + 2.5827) + "min. <br> Once completed, the run will be cached for 7 days.";
+        }
       } else {
         var atb_missing_button = document.getElementById("atb_missing");
         var atb_button = document.getElementById("atb");
@@ -755,7 +759,6 @@ OFraMP.prototype = {
 
       _this.showRelatedFragments();
     }
-
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if(xhr.readyState == 4) {
@@ -815,7 +818,7 @@ OFraMP.prototype = {
         }
     }
     data += "&shell=" + (shell ? shell : this.settings.defaults.defaultShell);
-
+    
     xhr.open("POST", this.settings.omfraf.generateUrl, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send(data);
@@ -1102,13 +1105,23 @@ OFraMP.prototype = {
       var loader_div = document.createElement('div');
       loader_div.id = 'loader_box';
       root.appendChild(loader_div);
-	  var loader_text = document.createElement("p");
+      var loader_text = document.createElement("p");
       loader_text.innerHTML = 'Loading fragments ...';
       loader_text.className = 'loader_text';
+      loader_text.id = 'loader_text';
+
+      var loader_text2 = document.createElement("p");
+      loader_text2.innerHTML = "Once completed, the run will be cached for 7 days.";
+      loader_text2.className = 'loader_text2';
+      loader_text2.id = 'loader_text2';
+      
+
       var loader = document.createElement('div');
       loader.className = 'loader';
+      loader.id = 'loader2';
       loader_div.appendChild(loader);
       loader_div.appendChild(loader_text);
+      loader_div.appendChild(loader_text2);
     }
     if(selection && selection.length > 0) {
       //this.findFragmentsButton.disabled = ffbState;

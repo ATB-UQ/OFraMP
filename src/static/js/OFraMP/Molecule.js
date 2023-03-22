@@ -6,7 +6,6 @@ Molecule.prototype = {
   mv: undefined,
   settings: undefined,
   cache: undefined,
-
   dataStr: undefined,
   atoms: undefined,
   bonds: undefined,
@@ -565,12 +564,26 @@ Molecule.prototype = {
 
         var query = JSON.stringify({off: off});
         var data = "data=" + encodeURIComponent(query);
-
         xhr.open("POST", this.settings.omfraf.missingUrl, true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(data);
       }
     }
+  },
+
+  delOFraMPRun: function(off) {
+    var xhr = new XMLHttpRequest();
+    var query = JSON.stringify({off: off});
+    var data = "data=" + encodeURIComponent(query);
+    xhr.open("POST", this.settings.omfraf.deleteUrl, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var message = JSON.parse(xhr.responseText);
+        alert(message.message);
+      }
+    };
+    xhr.send(data);
   },
 
   transfer_charges: function(api_url) {

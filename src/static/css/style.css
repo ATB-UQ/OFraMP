@@ -334,4 +334,9 @@ p .loader {
 
 .loader_text {
     font-size: 2rem;
+}
+
+.loader_text2 {
+    font-size: 1.5rem;
+    background-color: #FFF;
 };
