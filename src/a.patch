@@ -1,0 +1,195 @@
+diff --git a/src/help.html b/src/help.html
+index a108389..4b552c8 100644
+--- a/src/help.html
++++ b/src/help.html
+@@ -177,55 +177,27 @@
+       <hr />
+       <p>
+         OFraMP is an Online tool for Fragment-based Molecule Parameterisation.
+-        The 'Online' part we all get, but what about the fragment-based molecule
+-        parameterisation? Well, it is as follows:
++        OFraMP allows the user to obtain atomic charges for a molecule in the ATB database
++        from fragments of similar molecules.
+       </p>
+       <p>
+-        Every molecule has a charge, consisting of the sum of the charges of all
+-        atoms inside that molecule. Finding the total charge of a molecule is
+-        relatively easy, but finding the charges for the individual atoms is a
+-        hard and mathematically complex problem. It is theorised though, that common
+-        fragments of similar molecules should have roughly the same charges, allowing
+-        for a new way of parameterising a molecule: based on fragments.
+-      </p>
+-      <p>
+-        Combined with its
+-        supporting systems OAPoC (Online tool for Atom Position Calculation) and
+-        FDB (Fragment Database), OFraMP allows the user
+-        to insert a molecule and then present him with matching fragments of similar
+-        molecules, such that he can select the best matches and completely
+-        parameterise the molecule he inserted.
+-      </p>
+-      <p>
+-        OFraMP has originally been created as a graduation project for the Master
+-        Software Engineering at the University of Amsterdam, carried out at Centrum
+-        Wiskunde &amp; Informatica (CWI). The project was aimed at interaction
+-        design, and not too focused on chemical correctness. Nevertheless, it is
+-        believed that the foundation has been laid for a system that is of great
+-        value in chemistry research.
+-      </p>
+-      <p>
+-        I hope you have a good time using the system and that it can help you to
+-        parameterise a lot of molecules.
+-      </p>
+-      <p>
+-        Kind regards,<br />
+-        Jimi van der Woning, creator of OFraMP
++        OFraMP was originally created by Jimmi van der Woning, a Masters student in
++        Software Engineering at the Centrum Wiskunde &amp; Informatica (CWI), University of Amsterdam.
+       </p>
+ 
+       <h2 id="gettingstarted">Getting started with OFraMP</h2>
+       <hr />
+       <p>
+-        Upon loading OFraMP for the first time, you should see something like the following screen:<br />
+-        <img class="thumb" src="static/img/help/gs_1.png" alt="OFraMP welcome screen" />
++        In order to use OFraMP one must first login to the Automated Topology Builder (ATB): http://atb.uq.edu.au/login.py.
++        Once logged in, a user can then either find their molecule of interest in the existing database via the "Existing Molecules" tab,
++        or submit a new molecule via the "Submit" tab.
+       </p>
+       <p>
+-        Depending on whether you want to take a short tour or just use the system,
+-        you should now click either the 'Start demo' or the 'New molecule'
+-        button respectively.
++        OFraMP can be launched for a particular molecule from its page on the ATB site using the button "Fragment-Based Parametrisation with OFraMP"
++        located near the top of the page.
+       </p>
+       <p>
+-        In some cases, the welcome screen might also look like either one of the following:<br />
++        In some cases the OFraMP page may look like either one of the following:<br />
+         <img class="thumb" src="static/img/help/gs_2.png" alt="OFraMP welcome screen (warning)" />
+         <img class="thumb" src="static/img/help/gs_3.png" alt="OFraMP welcome screen (error)" />
+       </p>
+@@ -238,8 +210,7 @@
+       <p>
+         When you see a screen matching the second screenshot (red background),
+         you need to use a different browser if you want to use OFraMP. In this
+-        case, you are using a browser of over five years old, which cannot
+-        possibly be supported.
++        case, you are using a browser of over five years old, which is not supported.
+       </p>
+       <p>
+         In either of these two cases, it is advisable to upgrade your browser
+@@ -252,47 +223,25 @@
+       <h3 id="submitting">Entering a molecule into OFraMP</h3>
+       <hr />
+       <p>
+-        The window for entering a molecule into OFraMP should look like the following:<br />
+-        <img class="thumb" src="static/img/help/em_1.png" alt="Enter molecule" />
+-      </p>
+-      <p>
+-        Here, you can enter a molecule into the system using the PDB, SMILES or
+-        InChI format. Support for other formats may be added later, but is
+-        currently limited to these formats as they are the most used ones.
+-      </p>
+-      <p>
+-        When you want to use a molecule that is present in the
+-        <a href="http://compbio.biosci.uq.edu.au/atb/index.py?tab=home_tab">Automated Topology Builder (ATB)</a>,
+-        it is also possible to enter this molecule's Molecule ID
+-        directly into OFraMP. This will automatically retrieve the molecule's
+-        PDB file from the ATB, such that you do not need to do this yourself.
+-      </p>
+-      <p>
+-        In this window, it is also possible to <a href="#repository">change the repository</a>
+-        that will be used for finding molecule fragments and to
+-        <a href="#shell">modify the shell size</a> of the fragments that need
+-        to match. More information on these subjects can be found in the
+-        <a href="#advanced">Advanced features</a> section below.
++        There is a feature with allows for an ATB molecule identifier to be entered into OFraMP directly, however,
++        this feature comes with significant limitations and is not recommended.
+       </p>
+       <h3 id="viewing">Viewing the molecule</h3>
+       <hr />
+       <p>
+-        In case you enter the SMILES string <kbd>NCC(=O)CCO</kbd> into the system,
+-        you should initially see something like the following:<br />
++        After clicking the OFraMP link from the ATB site, the page will initially show something like the following:<br />
+         <img class="thumb" src="static/img/help/vm_1.png" alt="" />
+       </p>
+       <p>
+         As the 'Loading fragments...' text indicates, the fragments matching this
+-        molecule are now being loaded, so fragment finding is not yet possible at
+-        this stage. What you <em>can</em> already do is view the molecule. You can
+-        drag it around by holding down your <em>left</em> mouse button and dragging
+-        your mouse. You can also zoom in or out using your mouse's scrollwheel.
++        molecule are being identified. This can take anywhere from a few seconds to minutes depending on the size and
++        nature of the query molecule.
+       </p>
+       <h3 id="selecting">Selecting atoms to parameterise</h3>
+       <hr />
+       <p>
+-        Once the molecule has been displayed and the fragments have been generated
+-        you can start to parameterise the molecule. In order to do so, you need
++        Once the 'Loading fragments...' text has dissapeared
++        you can begin to parameterise the molecule. In order to do so, you need
+         to select one or more atoms that you want to find fragments for. There are
+         multiple ways of doing this. The first and easiest of these is to make
+         a single-atom selection, which can be done by simply clicking on that atom:<br />
+@@ -331,7 +280,7 @@
+       </p>
+       <p>
+         Hovering your mouse over the fragments and clicking them will preview
+-        their charges on the molecule. The fragment's atoms will be indicated
++        their charges on the molecule. The fragments atoms will be indicated
+         using a green background; their charges will be displayed below their element
+         names. Upon clicking a fragment, two buttons will become visible:
+         a 'Show molecule' button and a 'Select fragment' button. Upon clicking
+@@ -393,45 +342,18 @@
+         <img class="thumb" src="static/img/help/cc_4.png" alt="" />
+       </p>
+       <p>
+-        If the title of the popup says 'Fully parameterised', <em>all</em> a charge
+-        has been assigned to all atoms of the molecule. Generally, you are done
+-        now and you can download an LGF file containing the results. If you wish
+-        to manually adjust some charges, you can do so by closing the popup and
+-        selecting the atoms that you want to adjust the charges of. More information
+-        on this can be found <a href="#editing">below</a>.
++        If the title of the popup says 'Fully parameterised', <em>all</em> atoms have been assigned a charge.
++        The parametrisation of can now be finalised by the ATB by clicking the 'Send charges to ATB' button.
++        If you are done, you can close this window and refresh the ATB molecules page.
++        A new tab will be available "Fragment-Based Charges" which will utilise the OFraMP charges
++        to produce molecular topology file of your choice.
+       </p>
+-      <p>
+-        Otherwise, when the popup says 'No more options available', there are
+-        still some atoms remaining for which no fragments are available. You can
+-        download the LGF file, but the charges for those atoms will be set to 0.
+-        It might be better to manually assign charges to the atoms, which can be
+-        done by closing the popup and selecting the atoms you wish to parameterise.
+-        More information on this can be found <a href="#editing">below</a>.
+-      </p>
+-      <p>
+-        Once you feel like you are completely done (or at any point in the meantime),
+-        you can download an LGF file containing the results by clicking the
+-        'Download' button in the menu bar.
+-      </p>
+-
+       <h2 id="advanced">OFraMP's advanced features</h2>
+       <hr />
+       <p>
+         Besides just the basic functionality, OFraMP also has some features for
+         the more advanced users. These features will be discussed in this section.
+       </p>
+-      <h3 id="repository">Using a different repository</h3>
+-      <hr />
+-      <p>
+-        For finding the fragments of other molecules, OFraMP uses a repository
+-        of molecules that will be compared to the molecule you enter into the
+-        system. What fragments will be found, depends on what repository you select.
+-        It may be interesting to experiment with selecting different repositories,
+-        to see what repository results in the best parameterisation of the molecule.
+-        This can be done at the time you enter your molecule into the system, by
+-        changing the selection of the 'Fragment repository':<br />
+-        <img class="thumb" src="static/img/help/cr_1.png" alt="" />
+-      </p>
+       <h3 id="shell">Using a different shell size</h3>
+       <hr />
+       <p>

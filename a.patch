@@ -1,0 +1,50 @@
+index 1f8054b..baec602 100644
+--- a/src/static/js/OFraMP/OFraMP.js
++++ b/src/static/js/OFraMP/OFraMP.js
+@@ -430,7 +430,7 @@ OFraMP.prototype = {
+ 
+     var ta = document.createElement('textarea');
+     ta.id = "mds_input";
+-    ta.style.height = this.popup.clientHeight - 136 + "px";
++    ta.style.height = "12px" //this.popup.clientHeight - 136 + "px";
+     ta.placeholder = "Insert PDB / SMILES / InChI string or ATB ID here";
+     content.appendChild(ta);
+ 
+@@ -495,7 +495,11 @@ OFraMP.prototype = {
+     }
+     sb.appendChild(document.createTextNode("Submit"));
+     sb.onclick = function() {
+-      _this.submitMDS(ta.value);
++      success = false;
++      success = _this.submitMDS(ta.value);
++      if (!success) {
++        return;
++      }
+ 
+       var repository = rs.value;
+       _this.settings.omfraf.repository = repository;
+@@ -565,10 +569,12 @@ OFraMP.prototype = {
+         var sv = document.getElementById("save");
+         sv.style.display = "none";
+       } else {
+-        var atb_missing_button = document.getElementById("atb_missing");
+-        var atb_button = document.getElementById("atb");
+-        atb_button.style.display = "none";
+-        atb_missing_button.style.display = "none";
++        alert("Please provide an ATB molecule ID.")
++        return false;
++        // var atb_missing_button = document.getElementById("atb_missing");
++        // var atb_button = document.getElementById("atb");
++        // atb_button.style.display = "none";
++        // atb_missing_button.style.display = "none";
+       }
+ 
+       $ext.dom.dispatchEvent(_this.container, _this.moleculeDisplayedEvent);
+@@ -587,6 +593,7 @@ OFraMP.prototype = {
+     this.hideSelectionDetails();
+     this.hideRelatedFragments();
+     this.hidePopup();
++    return true;
+     //this.findFragmentsButton.style.display = "inline-block";
+   },
+

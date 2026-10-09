@@ -54,12 +54,13 @@
     <script>
       window.onload = function() {
         var OAPoC_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/generate/";
-        var OAPoC_LOAD_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/loadATB/";
+        var OAPoC_LOAD_URL = "{{ base_server }}/{{ project_name_formatter('OAPoC') }}/generate/";
         var FDB_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/load/";
         var FDB_REPO_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/repos/";
         var FDB_GENERATE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/generate/";
         var FDB_MISSING_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/missing/";
-	var FDB_COORDINATES_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/coordinates/";
+	    var FDB_DELETE_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/deleteOFraMPRun/";
+        var FDB_COORDINATES_URL = "{{ base_server }}/{{ project_name_formatter('FDB') }}/fragments/coordinates/";
         var ATB_API_URL = "{{ atb_api_url }}/";
         var DEFAULT_REPO = "ATB3";
         var DEFAULT_SHELL = 2;
@@ -77,6 +78,7 @@
             repoUrl: FDB_REPO_URL,
             generateUrl: FDB_GENERATE_URL,
             missingUrl: FDB_MISSING_URL,
+            deleteUrl: FDB_DELETE_URL,
             coordsUrl: FDB_COORDINATES_URL,
           },
           atb: {
@@ -224,6 +226,12 @@
         $ext.dom.onMouseClick(op, function() {
           oframp.settingsUI.toggle();
         }, $ext.mouse.LEFT);
+
+        var del = document.getElementById("delOFraMPRun");
+        $ext.dom.onMouseClick(del, delOFraMPRun, $ext.mouse.LEFT);
+        function delOFraMPRun() {
+          oframp.mv.molecule.delOFraMPRun(oframp.off);
+        }
 
         var hb = document.getElementById("help");
         $ext.dom.onMouseClick(hb, openHelp, $ext.mouse.LEFT);
@@ -466,6 +474,13 @@
             Settings
           </button>
         </div>
+
+        <div class="bgroup">
+          <button id="delOFraMPRun" class="border_box", title="Delete stored OFraMPRun">
+            Delete cached OFraMPRun
+          </button>
+        </div>
+
       </div>
     </div>
 

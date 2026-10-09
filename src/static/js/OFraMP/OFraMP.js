@@ -566,7 +566,7 @@ OFraMP.prototype = {
           document.getElementById("loader_text").remove();
           document.getElementById("loader_text2").innerHTML = "Query molecule is over 2000 atoms.";
         } else {
-          document.getElementById("loader_text2").innerHTML = "Your estimated waiting time is: " + Math.round(_this.mv.molecule.atoms.count()*0.0193 + 2.5827) + "min. <br> Once completed, the run will be cached for 7 days.";
+          document.getElementById("loader_text2").innerHTML = "Your estimated waiting time is: " + Math.round(_this.mv.molecule.atoms.count()*0.0193 + 2.5827) + "min." + "<br> This is valid in the best case scenario and depends on the load of the ATB." +  "<br> Once completed, the run will be cached for 7 days.";
         }
       } else {
         var atb_missing_button = document.getElementById("atb_missing");

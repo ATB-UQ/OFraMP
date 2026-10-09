@@ -605,14 +605,13 @@ Molecule.prototype = {
 
       if (has_undefined_charges) {
         alert('The charge of some atoms is not defined: ' + atoms_with_undefined_charge.join(', ') + '.\nPlease assign charges and retry.');
-      }
-      else if (! has_integer_total_charge) {
-        alert('The total charge is not an integer. Please edit the charges so that their sum adds to an integer, and resubmit.');
-        console.log(
-          this.atoms.map(function(atom){return atom.charge}),
-        );
-      }
-      else {
+      } else {
+		if (! has_integer_total_charge) {
+			alert('WARNING: It appears that the total charge is not an integer. The charges will still be transferred to the ATB.');
+			console.log(
+				this.atoms.map(function(atom){return atom.charge}),
+			);
+		}
         var json_mapping = JSON.stringify(charge_mapping);
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", api_url + "api/current/molecules/oframp_charges.py", false);

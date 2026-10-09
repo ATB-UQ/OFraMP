@@ -305,13 +305,9 @@ MoleculeViewer.prototype = {
       }
     };
 
-    if(fromFDB) {
-      var url = this.settings.oapoc.loadUrl;
-      var data = "molid=" + encodeURIComponent(dataStr);
-    } else {
-      var url = this.settings.oapoc.url;
-      var data = "data=" + encodeURIComponent(dataStr);
-    }
+
+    var url = this.settings.oapoc.url;
+    var data = "data=" + encodeURIComponent(dataStr);
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send(data);

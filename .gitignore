@@ -1,1 +1,11 @@
 nbproject/
+
+# production junk (prod-2026-10)
+media/*
+!media/.gitkeep
+*.log
+nohup.out
+*.pyc
+celerybeat.pid
+a.git
+hell
