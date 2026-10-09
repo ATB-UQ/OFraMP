@@ -58,18 +58,19 @@ var FULLY_SUPPORTED_BROWSERS = [{
 
 var PREDEFINED_MOLECULES = ["CC(NC)CC1=CC=C(OCO2)C2=C1", "c1ccccc1"];
 
+// The service URLs are set at build time (jinja_renderer.py -> index.html) and override these empty defaults.
 var DEFAULT_SETTINGS = {
   oapoc: {
-    url: "https://fragments.atb.uq.edu.au/oapoc/generate/",
-    loadUrl: "https://fragments.atb.uq.edu.au/oapoc/load/",
+    url: "",
+    loadUrl: "",
     version: "1.0"
   },
 
   omfraf: {
-    url: "https://fragments.atb.uq.edu.au/fdb/fragments/load/",
-    repoUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/repos/",
-    generateUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/generate/",
-    coordsUrl: "https://fragments.atb.uq.edu.au/fdb/fragments/coordinates/",
+    url: "",
+    repoUrl: "",
+    generateUrl: "",
+    coordsUrl: "",
     version: "1.0",
   },
 

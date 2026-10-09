@@ -60,10 +60,7 @@ Molecule.prototype = {
   downloadLGF: function() {
     var date = $ext.date.format(new Date(), "%Y%m%d%H%M%S");
     var fname = "OFraMP-" + date + ".lgf";
-    $ext.sendDataForm("save.php", {
-      data: this.getLGF(),
-      fname: fname
-    }, "post", "_blank");
+    $ext.downloadData(this.getLGF(), fname);
   },
 
   getLGF: function() {
@@ -630,7 +627,7 @@ Molecule.prototype = {
         else {
           var should_redirect = confirm("Charge assignment successfully sent to the ATB.\n Would you like to be redirected to the topology generation page ?");
           if (should_redirect == true) {
-            window.location = 'https://atb.uq.edu.au/molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
+            window.location = api_url + 'molecule.py?molid=' + this.molid.toString() + '#panel-oframp';
           }
         }
       }

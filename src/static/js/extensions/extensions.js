@@ -179,6 +179,47 @@ var ext = {
   },
 
   /*
+   * Offer the given data to the user as a file download, client side (replaces the old
+   * round trip through save.php, which echoed the POSTed data back as an attachment).
+   *
+   * data:     the file content (text), or base64 text when `isBase64` is set (decoded to bytes first;
+   *           save.php did the same when it was sent `bd`)
+   * fname:    suggested file name
+   * mimeType: defaults to application/octet-stream
+   */
+  downloadData: function(data, fname, mimeType, isBase64) {
+    mimeType = mimeType || "application/octet-stream";
+    fname = fname || "download";
+
+    var content = data;
+    if(isBase64) {
+      var bin = atob(data);
+      content = new Uint8Array(bin.length);
+      for(var i = 0; i < bin.length; i++) {
+        content[i] = bin.charCodeAt(i);
+      }
+    }
+    var blob = new Blob([content], {type: mimeType});
+
+    if(window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, fname);
+      return;
+    }
+
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = fname;
+    document.documentElement.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function() {
+      window.URL.revokeObjectURL(url);
+    }, 10000);
+  },
+
+  /*
    * Determine whether the user is using a broken IE browser (i.e. IE <= 8).
    */
   onBrokenIE: function() {
